@@ -1,0 +1,29 @@
+        -:    0:Source:../../../src/main.cpp
+        -:    0:Graph:.\main.cpp.gcno
+        -:    0:Data:.\main.cpp.gcda
+        -:    0:Runs:2
+        -:    0:Programs:1
+        -:    0:Source is newer than graph
+        -:    1:#include <ctime>
+        -:    2:#include <iostream>
+        -:    3:
+        -:    4:
+        0:    5:void FunctionNeverCalled()
+        -:    6:{
+        0:    7:    std::cout << t << " i was never called\n";
+        -:    8:}
+        2:    9:void FunctionTwiceCalled()
+        -:   10:{
+        2:   11:    std::cout << t << " i was twice called\n";
+        -:   12:}
+        -:   13:       
+        1:   14:int main()
+        -:   15:{
+        1:   16:    std::time_t t = std::time(0);  // t is an integer type
+        1:   17:    std::cout << t << " seconds since 01-Jan-1970\n";
+        1:   18:    std::cout << "std= " << __cplusplus << std::endl;
+        -:   19:    
+        1:   20:    FunctionTwiceCalled();
+        1:   21:    FunctionTwiceCalled();
+        1:   22:    return 0;
+        -:   23:}
