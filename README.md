@@ -14,3 +14,12 @@ Install all packages, start debugging and open the sample folder within the runn
 ```
 npm install
 ```
+
+
+## what's next?
+
+* setting up unit tests 
+* attaching overall coverage percentage to statusbar
+* create a dark and light green decorator
+* create coverage report automatically / by command 
+* ux improvement like hints if no gcov files found, wrong fileformat ... 
