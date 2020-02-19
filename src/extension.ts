@@ -26,18 +26,18 @@ export function activate(context: vscode.ExtensionContext) {
 	
 	context.subscriptions.push(ToggleGcovVisualization, activeEditorDidChanged);
 
-	 function ActivateVisualization ()
-	 {
-		decorations.SetState(true);
-		SetAllDecorations();
-	 }
+}
+export function deactivate() 
+{
+	ResetDecorations();
+}
 
-	 function DeactivateVisualization ()
-	 {
-		decorations.SetState(false);
-		ResetDecorations();
-	 }
 
+
+function ActivateVisualization ()
+{
+   decorations.SetState(true);
+   SetAllDecorations();
 }
 
 function SetAllDecorations()
@@ -47,33 +47,7 @@ function SetAllDecorations()
 
 
 
-export function deactivate() 
-{
-	ResetDecorations();
-}
 
-function ResetDecorations()
-{
-	vscode.window.visibleTextEditors.forEach(Reset);
-}
-
-function Reset(textEditor: vscode.TextEditor | undefined)
-{
-	if (textEditor)
-		ResetDecoration(textEditor);
-}
-
-function ResetDecoration (textEditor: vscode.TextEditor)
-{
-	var decorator = decorations.GetDecorator(textEditor!);
-	
-	if(decorator)
-	{
-		decorator.forEach(function( d ) { 
-			d.Reset();
-		});
-	}
-}
 
 function Update(textEditor: vscode.TextEditor | undefined) 
 {
@@ -88,8 +62,6 @@ function Update(textEditor: vscode.TextEditor | undefined)
 		UpdateDecoration(textEditor!, gcovFile);
 	}
 }
-
-
 
 function UpdateEditorAndWorkspace(textEditor: vscode.TextEditor | undefined)
 {
@@ -119,4 +91,35 @@ function UpdateDecoration(textEditor: vscode.TextEditor, gcovFile : string | und
 	}	
 	else 
 		console.log("Invalid file open: " + gcovFile);
+}
+
+
+
+
+function DeactivateVisualization ()
+{
+   decorations.SetState(false);
+   ResetDecorations();
+}
+function ResetDecorations()
+{
+	vscode.window.visibleTextEditors.forEach(Reset);
+}
+
+function Reset(textEditor: vscode.TextEditor | undefined)
+{
+	if (textEditor)
+		ResetDecoration(textEditor);
+}
+
+function ResetDecoration (textEditor: vscode.TextEditor)
+{
+	var decorator = decorations.GetDecorator(textEditor!);
+	
+	if(decorator)
+	{
+		decorator.forEach(function( d ) { 
+			d.Reset();
+		});
+	}
 }

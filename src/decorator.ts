@@ -120,7 +120,7 @@ class internal_Decoration
 
     // Expression for Gcov Line <NO OF EXECUTION> : <ROW NUMBER IN SOURCE> : <ROW CONTENT>
     // literally: "some spaces and digits" : "some spaces and digits" : "any content to end of line"
-    private GCOV_REGEXP : RegExp = new RegExp('^[\\s\\d]*:[\\s\\d]*:.*');
+    private GCOV_REGEXP : RegExp = new RegExp('^[\\s\\d(\\*)?]*:[\\s\\d]*:.*');
 
     constructor ( textEditor : vscode.TextEditor , gcovfile : string, color : string) 
     {
@@ -179,15 +179,14 @@ class internal_Decoration
     private GetValidLineContent(gcovLine : string)
     {
         var match = gcovLine.toString().match(this.GCOV_REGEXP);
+        
         if (match)
         {
             var splittedLine = match.toString().split(':');
-            var execution = splittedLine[0];
+            var execution = splittedLine[0].replace('*','');
             var rowNumber = splittedLine[1];
-            var content = match.toString().replace(
-                execution + ":" + rowNumber +":",
-                ''
-            );
+            // drop first two elements and join again with colon in case of colons within the content (colons are dropped by split)
+            var content = splittedLine.slice(2).join(':');
 
             return [
                 execution.toString().trim(),
