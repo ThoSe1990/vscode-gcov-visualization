@@ -119,7 +119,7 @@ class internal_Decoration
     private Color : string;
 
     // Expression for Gcov Line <NO OF EXECUTION> : <ROW NUMBER IN SOURCE> : <ROW CONTENT>
-    // literally: "some spaces and digits" : "some spaces and digits" : "any content to end of line"
+    // literally: "some spaces and digits" : "some spaces and digits (optional with *)" : "any content to end of line"
     private GCOV_REGEXP : RegExp = new RegExp('^[\\s\\d(\\*)?]*:[\\s\\d]*:.*');
 
     constructor ( textEditor : vscode.TextEditor , gcovfile : string, color : string) 
