@@ -44,10 +44,11 @@ suite('Filehandler Test Suite', () => {
 
 	test('FindGcovFile - no gcov files in open editor', () => {
 		var filehandler = new FileHandler.FileHandler();
-		
-		var test = new fakeEditor.FakeEditor();
-		var file = test.document.fileName;
-		assert.notEqual(file, undefined);
+		var uri = vscode.workspace.workspaceFolders![0].uri;
+		var document = new fakeEditor.FakeTextDocument(uri);
+		var editor = new fakeEditor.FakeEditor(document);
+
+		// assert.notEqual();
 
 	});
 

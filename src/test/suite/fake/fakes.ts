@@ -1,6 +1,20 @@
 
 import * as vscode from 'vscode';
 
+
+class FakeWorkspaceFolder implements vscode.WorkspaceFolder
+{
+    uri: vscode.Uri;    
+    name!: string;
+    index!: number;
+
+    constructor(_uri : vscode.Uri)
+    {
+        this.uri = _uri;
+    }
+}
+
+
 class FakeTextLine implements vscode.TextLine
 {
     lineNumber!: number;    
@@ -12,9 +26,14 @@ class FakeTextLine implements vscode.TextLine
 
 }
 
-class FakeTextDocument implements vscode.TextDocument 
+export class FakeTextDocument implements vscode.TextDocument 
 {
-    uri: vscode.Uri = vscode.Uri.parse(vscode.workspace.workspaceFolders![0].uri.fsPath + "\\src\\noGcovFile.cpp");		
+    constructor(_uri : vscode.Uri)
+    {
+        this.uri = _uri;
+    }
+
+    uri: vscode.Uri;		
     fileName: string = this.uri.fsPath;
     isUntitled!: boolean;
     languageId!: string;
@@ -30,7 +49,6 @@ class FakeTextDocument implements vscode.TextDocument
     lineAt(position: vscode.Position): vscode.TextLine;
     lineAt(position: any) {
         return new FakeTextLine();
-        //throw new Error("Method not implemented.");
     }
     offsetAt(position: vscode.Position): number {
         throw new Error("Method not implemented.");
@@ -54,17 +72,19 @@ class FakeTextDocument implements vscode.TextDocument
 
 export class FakeEditor implements vscode.TextEditor 
 {
-    document: vscode.TextDocument = new FakeTextDocument();
+
+    constructor(_document : vscode.TextDocument)
+    {
+        this.document = _document;
+    }
+
+
+    document: vscode.TextDocument;
     selection!: vscode.Selection;
     selections!: vscode.Selection[];
     visibleRanges!: vscode.Range[];
     options!: vscode.TextEditorOptions;
     viewColumn?: vscode.ViewColumn | undefined;
-
-    constructor()
-    {
-
-    }
 
     edit(callback: (editBuilder: vscode.TextEditorEdit) => void, options?: { undoStopBefore: boolean; undoStopAfter: boolean; } | undefined): Thenable<boolean> {
         throw new Error("Method not implemented.");
