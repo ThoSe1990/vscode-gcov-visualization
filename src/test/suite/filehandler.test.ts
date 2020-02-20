@@ -1,55 +1,55 @@
-import * as assert from 'assert';
+// import * as assert from 'assert';
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
-import * as vscode from 'vscode';
-import * as fakeEditor from './fake/fakes';
+// // You can import and use all API from the 'vscode' module
+// // as well as import your extension to test it
+// import * as vscode from 'vscode';
+// import * as fakeEditor from './fake/fakes';
 
-import * as FileHandler from '../../filehandler'
+// import * as FileHandler from '../../filehandler'
 
 
-suite('Filehandler Test Suite', () => {
+// suite('Filehandler Test Suite', () => {
 
-	test('GetAllGcovFilesFromWorkspace - no path', () => {
+	// test('GetAllGcovFilesFromWorkspace - no path', () => {
 		
-		var filehandler = new FileHandler.FileHandler();
-		filehandler.GetAllGcovFilesFromWorkspace(undefined);
+	// 	var filehandler = new FileHandler.FileHandler();
+	// 	filehandler.GetAllGcovFilesFromWorkspace(undefined);
 
-		var GcovFiles = filehandler.GetGcovFiles();
+	// 	var GcovFiles = filehandler.GetGcovFiles();
 
-		assert.equal(true, GcovFiles.length === 0);
+	// 	assert.equal(true, GcovFiles.length === 0);
 
-	});
+	// });
 
-	test('GetAllGcovFilesFromWorkspace - in testfiles directory', () => {
-		var filehandler = new FileHandler.FileHandler();
-		var workscpaceFolder = vscode.workspace.workspaceFolders;
-		if (workscpaceFolder)
-			filehandler.GetAllGcovFilesFromWorkspace(workscpaceFolder[0].uri.fsPath);
+	// test('GetAllGcovFilesFromWorkspace - in testfiles directory', () => {
+	// 	var filehandler = new FileHandler.FileHandler();
+	// 	var workscpaceFolder = vscode.workspace.workspaceFolders;
+	// 	if (workscpaceFolder)
+	// 		filehandler.GetAllGcovFilesFromWorkspace(workscpaceFolder[0].uri.fsPath);
 
-		var GcovFiles = filehandler.GetGcovFiles();
+	// 	var GcovFiles = filehandler.GetGcovFiles();
 
-		assert.equal(true, GcovFiles.toString().includes('main.cpp.gcov'));
+	// 	assert.equal(true, GcovFiles.toString().includes('main.cpp.gcov'));
 
-	});
+	// });
 
-	test('FindGcovFile - no text editor', () => {
-		var filehandler = new FileHandler.FileHandler();
-		var result = filehandler.FindGcovFile(undefined);
-		assert.equal(result, undefined);
-	});
+	// test('FindGcovFile - no text editor', () => {
+	// 	var filehandler = new FileHandler.FileHandler();
+	// 	var result = filehandler.FindGcovFile(undefined);
+	// 	assert.equal(result, undefined);
+	// });
 
 
 	
 
-	test('FindGcovFile - no gcov files in open editor', () => {
-		var filehandler = new FileHandler.FileHandler();
-		var uri = vscode.workspace.workspaceFolders![0].uri;
-		var document = new fakeEditor.FakeTextDocument(uri);
-		var editor = new fakeEditor.FakeEditor(document);
+	// test('FindGcovFile - no gcov files in open editor', () => {
+	// 	var filehandler = new FileHandler.FileHandler();
+	// 	var uri = vscode.workspace.workspaceFolders![0].uri;
+	// 	var document = new fakeEditor.FakeTextDocument(uri);
+	// 	var editor = new fakeEditor.FakeEditor(document);
 
-		// assert.notEqual();
+	// 	// assert.notEqual();
 
-	});
+	// });
 
-});
+// });
