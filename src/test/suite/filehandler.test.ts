@@ -22,9 +22,11 @@ suite('Filehandler Test Suite', () => {
 	});
 
 	test('GetAllGcovFilesFromWorkspace - in testfiles directory', () => {
+		process.chdir(__dirname);
+		process.chdir("../../../");
 		var filehandler = new FileHandler.FileHandler();
 		var workscpaceFolder = vscode.workspace.workspaceFolders;
-		filehandler.GetAllGcovFilesFromWorkspace( "./src/test/suite/testfiles" );
+		filehandler.GetAllGcovFilesFromWorkspace(".\\src\\test\\suite\\testfiles" );
 		var GcovFiles = filehandler.GetGcovFiles();
 
 		assert.equal(true, GcovFiles.toString().includes('main.cpp.gcov'));
