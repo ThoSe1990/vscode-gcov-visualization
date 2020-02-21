@@ -36,6 +36,7 @@ steps:
     echo ">>> Get Test files"
     yarn && yarn cwd
     yarn && yarn ls
+    yarn && yarn ls ./out
     yarn && yarn copy
     echo ">>> Run test"
     yarn && yarn compile && yarn test
