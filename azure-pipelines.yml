@@ -33,8 +33,8 @@ steps:
     npm install cwd
     echo ">>> Compile"
     yarn && yarn compile
-    echo ">>> cwd"
-    ls
+    echo ">>> Get Test files"
+    yarn && yarn copy
     echo ">>> Run test"
     yarn && yarn compile && yarn test
   displayName: Run Tests
