@@ -30,9 +30,9 @@ steps:
 
 - bash: |
     echo ">>> Compile"
-    yarn && yarn compile
+    npm run compile
     echo ">>> Run test"
-    yarn && yarn compile && yarn test
+    npm run test
   displayName: Run Tests
   env:
     DISPLAY: ':99.0'
