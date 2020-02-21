@@ -17,10 +17,11 @@ export class FileHandler
 
 	public GetAllGcovFilesFromWorkspace(inPath: string | undefined) 
 	{ 
+        console.log("looking for files in " + inPath);
         if (!fs.existsSync(inPath))
         {
             console.log("no dir ",inPath);
-            return '';
+            return ;
         }
 
         var files=fs.readdirSync(inPath);

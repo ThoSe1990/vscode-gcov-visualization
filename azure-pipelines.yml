@@ -31,6 +31,8 @@ steps:
 - bash: |
     echo ">>> Compile"
     yarn && yarn compile
+    echo ">>> pwd"
+    yarn && yarn pwd
     echo ">>> Run test"
     yarn && yarn compile && yarn test
   displayName: Run Tests
