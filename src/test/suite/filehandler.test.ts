@@ -24,12 +24,7 @@ suite('Filehandler Test Suite', () => {
 	test('GetAllGcovFilesFromWorkspace - in testfiles directory', () => {
 		var filehandler = new FileHandler.FileHandler();
 		var workscpaceFolder = vscode.workspace.workspaceFolders;
-		console.log(workscpaceFolder);
-		if (workscpaceFolder)
-		{
-			filehandler.GetAllGcovFilesFromWorkspace(workscpaceFolder[0].uri.fsPath);
-			console.log(workscpaceFolder[0].uri.fsPath);
-		}
+		filehandler.GetAllGcovFilesFromWorkspace(workscpaceFolder![0].uri.fsPath);
 		var GcovFiles = filehandler.GetGcovFiles();
 
 		assert.equal(true, GcovFiles.toString().includes('main.cpp.gcov'));

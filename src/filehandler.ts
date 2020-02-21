@@ -45,7 +45,7 @@ export class FileHandler
         for (var i = 0 ; i < this.GcovFilePaths.length ; i++)
         {
             if (this.GcovFilePaths[i].indexOf(file!) !== -1)
-            consideredFiles.push(this.GcovFilePaths[i]);
+                consideredFiles.push(this.GcovFilePaths[i]);
         }
         return consideredFiles;
     }
