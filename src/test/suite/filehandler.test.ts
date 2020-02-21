@@ -7,6 +7,18 @@ import * as fakeEditor from './fake/fakes';
 
 import * as FileHandler from '../../filehandler'
 
+function ChangeDirectoryToTestFiles()
+{
+	// to avoid / and \ in paths considering windows and linux unittests
+	process.chdir(__dirname);
+	process.chdir("..");
+	process.chdir("..");
+	process.chdir("..");
+	process.chdir("src");
+	process.chdir("test");
+	process.chdir("suite");
+	process.chdir("testfiles");
+}
 
 suite('Filehandler Test Suite', () => {
 
@@ -22,20 +34,15 @@ suite('Filehandler Test Suite', () => {
 	});
 
 	test('GetAllGcovFilesFromWorkspace - in testfiles directory', () => {
-		process.chdir(__dirname);
-		process.chdir("..");
-		process.chdir("..");
-		process.chdir("..");
-		process.chdir("src");
-		process.chdir("test");
-		process.chdir("suite");
-		process.chdir("testfiles");
+
+		ChangeDirectoryToTestFiles();
+
 		var filehandler = new FileHandler.FileHandler();
-		
 		filehandler.GetAllGcovFilesFromWorkspace(process.cwd());
 		var GcovFiles = filehandler.GetGcovFiles();
 
 		assert.equal(true, GcovFiles.toString().includes('main.cpp.gcov'));
+		assert.equal(1, GcovFiles.length);
 
 	});
 
