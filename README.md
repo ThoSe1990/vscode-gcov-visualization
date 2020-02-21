@@ -1,4 +1,5 @@
-[![Build Status](https://dev.azure.com/thomassedlmair/vscode-gcov-visualization/_apis/build/status/ThoSe1990.vscode-gcov-visualization?branchName=master)](https://dev.azure.com/thomassedlmair/vscode-gcov-visualization/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://dev.azure.com/thomassedlmair/vscode-gcov-visualization/_apis/build/status/ThoSe1990.vscode-gcov-visualization?branchName=unittest)](https://dev.azure.com/thomassedlmair/vscode-gcov-visualization/_build/latest?definitionId=1&branchName=unittest)
+
 
 # vscode-gcov-visualization
 

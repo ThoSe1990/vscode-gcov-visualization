@@ -17,16 +17,16 @@ export class FileHandler
 
 	public GetAllGcovFilesFromWorkspace(inPath: string | undefined) 
 	{ 
-        console.log("path: " + inPath);
-        if (!fs.existsSync(inPath))
+        if (fs.existsSync(inPath))
         {
-            console.log("no dir ",inPath);
-            return ;
+            var files=fs.readdirSync(inPath);
+            this.FindFilesRecursively(files, inPath); 
         }
-
-        var files=fs.readdirSync(inPath);
-
-        this.FindFilesRecursively(files, inPath);       
+        else
+        {
+            console.log("no dir " + inPath);
+            return ;
+        }      
     }
     
     public FindGcovFile(textEditor : vscode.TextEditor | undefined)

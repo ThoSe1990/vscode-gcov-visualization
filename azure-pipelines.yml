@@ -29,15 +29,8 @@ steps:
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Linux'))
 
 - bash: |
-    echo ">>> install npm"
-    npm install cwd
     echo ">>> Compile"
     yarn && yarn compile
-    echo ">>> Get Test files"
-    yarn && yarn cwd
-    yarn && yarn cd
-    yarn && yarn ls
-    yarn && yarn copy
     echo ">>> Run test"
     yarn && yarn compile && yarn test
   displayName: Run Tests
