@@ -52,7 +52,7 @@ suite('Filehandler Test Suite', () => {
 	test('FindGcovFile - file with gcov file open', () => {
 	
 		ChangeDirectoryToTestFiles();
-		var file = path.join(process.cwd() + '/src' + '/main.cpp');
+		var file = path.join(process.cwd() + '\\src' + '\\main.cpp');
 		file = path.normalize(file);
 		var uri = vscode.Uri.parse(file);
 
