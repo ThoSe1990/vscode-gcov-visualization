@@ -2,7 +2,7 @@
 import * as vscode from 'vscode';
 
 
-class FakeWorkspaceFolder implements vscode.WorkspaceFolder
+export class FakeWorkspaceFolder implements vscode.WorkspaceFolder
 {
     uri: vscode.Uri;    
     name!: string;
@@ -28,18 +28,21 @@ class FakeTextLine implements vscode.TextLine
 
 export class FakeTextDocument implements vscode.TextDocument 
 {
+
     constructor(_uri : vscode.Uri)
     {
         this.uri = _uri;
+        this.fileName = _uri.fsPath;
     }
 
     uri: vscode.Uri;		
-    fileName: string = this.uri.fsPath;
+    fileName: string;
     isUntitled!: boolean;
     languageId!: string;
     version!: number;
     isDirty!: boolean;
     isClosed!: boolean;
+
     save(): Thenable<boolean> {
         throw new Error("Method not implemented.");
     }

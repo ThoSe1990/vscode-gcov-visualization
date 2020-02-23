@@ -1,15 +1,15 @@
 
 import * as vscode from 'vscode';
-import * as FileHandler from './filehandler'
-import * as Decorator from './decorator'
-import * as Validation from './validation'
-import { ActualWorkspaceFolder } from './validation'
-import { ActualEditor } from './validation'
+import * as FileHandler from './filehandler';
+import * as Decorator from './decorator';
+import * as Validation from './validation';
+// import { ActualWorkspaceFolder } from './validation';
+// import { ActualEditor } from './validation';
 
 export var decorations = new Decorator.DecoratorHandler();
 export var filehandler = new FileHandler.FileHandler();
 
-var validation = new Validation.AllValidation();
+// var validation = new Validation.AllValidation();
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -54,7 +54,7 @@ function Update(textEditor: vscode.TextEditor | undefined)
 
 	UpdateEditorAndWorkspace(textEditor);
 	
-	if (validation.ValidateAll())
+	// if (validation.ValidateAll())
 	{
 		UpdateGcovFilesInWorkspace();
 		
@@ -65,14 +65,14 @@ function Update(textEditor: vscode.TextEditor | undefined)
 
 function UpdateEditorAndWorkspace(textEditor: vscode.TextEditor | undefined)
 {
-	ActualEditor.SetTextEditor(textEditor);
-	ActualWorkspaceFolder.SetWorkspaceFolder(vscode.workspace.workspaceFolders);
+	// ActualEditor.SetTextEditor(textEditor);
+	// ActualWorkspaceFolder.SetWorkspaceFolder(vscode.workspace.workspaceFolders);
 }
 
 function UpdateGcovFilesInWorkspace()
 {
-	var workscpaceFolder = ActualWorkspaceFolder.GetWorkspaceFolder();
-	filehandler.GetAllGcovFilesFromWorkspace(workscpaceFolder![0].uri.fsPath);
+	// var workscpaceFolder = ActualWorkspaceFolder.GetWorkspaceFolder();
+	// filehandler.GetAllGcovFilesFromWorkspace(workscpaceFolder![0].uri.fsPath);
 }
 
 function UpdateDecoration(textEditor: vscode.TextEditor, gcovFile : string | undefined)

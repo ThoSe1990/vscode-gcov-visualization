@@ -1,15 +1,13 @@
 import * as assert from 'assert';
-
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
 import * as fakeEditor from './fake/fakes';
-
 import * as FileHandler from '../../filehandler'
+
+var fs = require('fs');
+var path = require('path');
 
 function ChangeDirectoryToTestFiles()
 {
-	// to avoid / and \ in paths considering windows and linux unittests
 	process.chdir(__dirname);
 	process.chdir("..");
 	process.chdir("..");
@@ -43,7 +41,6 @@ suite('Filehandler Test Suite', () => {
 
 		assert.equal(true, GcovFiles.toString().includes('main.cpp.gcov'));
 		assert.equal(1, GcovFiles.length);
-
 	});
 
 	test('FindGcovFile - no text editor', () => {
@@ -52,6 +49,40 @@ suite('Filehandler Test Suite', () => {
 		assert.equal(result, undefined);
 	});
 
+	test('FindGcovFile - file with gcov file open', () => {
+	
+		ChangeDirectoryToTestFiles();
+		var file = path.join(process.cwd() + '/src' + '/main.cpp');
+		var uri = vscode.Uri.parse(file);
 
+		var document = new fakeEditor.FakeTextDocument(uri);
+		var editor = new fakeEditor.FakeEditor(document);
+
+		var filehandler = new FileHandler.FileHandler();
+		filehandler.GetAllGcovFilesFromWorkspace(process.cwd());
+
+		var result = filehandler.FindGcovFile(editor);
+		
+		assert.notEqual(result, undefined);
+		assert.equal(true, result!.includes('main.cpp.gcov'));
+
+	});
+
+	test('FindGcovFile - file without gcov file open', () => {
+	
+		ChangeDirectoryToTestFiles();
+		var file = path.join(process.cwd() + '/src' + '/noGcovFile.cpp');
+		var uri = vscode.Uri.parse(file);
+
+		var document = new fakeEditor.FakeTextDocument(uri);
+		var editor = new fakeEditor.FakeEditor(document);
+
+		var filehandler = new FileHandler.FileHandler();
+		filehandler.GetAllGcovFilesFromWorkspace(process.cwd());
+
+		var result = filehandler.FindGcovFile(editor);
+		
+		assert.equal(result, undefined);
+	});
 
 });

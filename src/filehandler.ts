@@ -34,21 +34,21 @@ export class FileHandler
         if (textEditor)
         {            
             var openFile = textEditor.document.fileName;
-            var consideredFiles = this.FindAllFilesWithSameName(openFile);
-            return this.GetGcovFile(consideredFiles, openFile);
+            var foundFiles = this.FindAllFilesWithSameName(openFile);
+            return this.GetGcovFile(foundFiles, openFile);
         }
     }
 
     private FindAllFilesWithSameName(openFile : string)
     {
         var file = this.GetFilename(openFile);
-        var consideredFiles = [];
+        var foundFiles = [];
         for (var i = 0 ; i < this.GcovFilePaths.length ; i++)
         {
             if (this.GcovFilePaths[i].indexOf(file!) !== -1)
-                consideredFiles.push(this.GcovFilePaths[i]);
+            foundFiles.push(this.GcovFilePaths[i]);
         }
-        return consideredFiles;
+        return foundFiles;
     }
     private GetGcovFile (gcovFiles : string [], openFile : string)
     {
