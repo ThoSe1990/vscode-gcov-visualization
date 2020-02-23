@@ -53,6 +53,7 @@ suite('Filehandler Test Suite', () => {
 	
 		ChangeDirectoryToTestFiles();
 		var file = path.join(process.cwd() + '/src' + '/main.cpp');
+		file = path.normalize(file);
 		var uri = vscode.Uri.parse(file);
 
 		var document = new fakeEditor.FakeTextDocument(uri);
