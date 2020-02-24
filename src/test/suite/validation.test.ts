@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import * as Fakes from './additional/fakes';
-import * as Additional from './additional/testfiles';
+import * as Fakes from './unittest_includes/fakes';
+import * as Helper from './unittest_includes/testhelper';
 import * as Validation from '../../validation';
 
 
@@ -40,7 +40,7 @@ suite('Validation Test Suite', () => {
 
 	test('validation open editor passed', () => {
 
-		var uri = Additional.GetMainCppUri();
+		var uri = Helper.GetMainCppUri();
 
 		var document = new Fakes.FakeTextDocument(uri);
 		var editor = new Fakes.FakeEditor(document);

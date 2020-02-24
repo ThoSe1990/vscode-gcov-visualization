@@ -10,7 +10,7 @@ const LIGHT_RED = '#c8282850';
 const LIGHT_GREEN = '#2F853550';
 
 
-const COLORS = [ LIGHT_RED,
+export const COLORS = [ LIGHT_RED,
                 LIGHT_GREEN ];
 
 
@@ -47,18 +47,18 @@ export class DecoratorHandler
           
     }
 
-    private NoGcovFile(textEditor : vscode.TextEditor , gcovFiles : any)
-    {
-        var path = textEditor.document.fileName;
-        var file = path.substring(path.lastIndexOf('\\')+1);
+    // private NoGcovFile(textEditor : vscode.TextEditor , gcovFiles : any)
+    // {
+    //     var path = textEditor.document.fileName;
+    //     var file = path.substring(path.lastIndexOf('\\')+1);
 
-        for (var i = 0 ; i < gcovFiles.length ; i++ )
-        {
-            if (gcovFiles[i].toString().indexOf(file) !== -1)
-                return gcovFiles[i];
-        }
-        return '';
-    }
+    //     for (var i = 0 ; i < gcovFiles.length ; i++ )
+    //     {
+    //         if (gcovFiles[i].toString().indexOf(file) !== -1)
+    //             return gcovFiles[i];
+    //     }
+    //     return '';
+    // }
 
     public GetDecorator(textEditor : vscode.TextEditor)
     {
