@@ -19,7 +19,7 @@ function ChangeDirectoryToTestFiles()
 export function GetTestFilesDirectory()
 {
 	ChangeDirectoryToTestFiles();
-	return process.cwd();
+	return path.normalize(process.cwd());
 }
 
 export function GetMainCppUri () 
