@@ -17,36 +17,33 @@ export class FileHandler
 
 	public GetAllGcovFilesFromWorkspace(inPath: string | undefined) 
 	{ 
-        console.log("path: " + inPath);
-        // if (fs.existsSync(inPath))
-        // {
-        //     var files=fs.readdirSync(inPath);
-        //     this.FindFilesRecursively(files, inPath); 
-        // }
-        // else
-        // {
-        //     console.log("no dir " + inPath);
-        //     return ;
-        // }      
-        if (!fs.existsSync(inPath))
+        if (fs.existsSync(inPath))
         {
-            console.log("no dir ",inPath);
-            return '';
+            var files=fs.readdirSync(inPath);
+            this.FindFilesRecursively(files, inPath); 
         }
+        else
+        {
+            console.log("no dir " + inPath);
+            return ;
+        }      
+        // if (!fs.existsSync(inPath))
+        // {
+        //     console.log("no dir ",inPath);
+        //     return '';
+        // }
 
-        var files=fs.readdirSync(inPath);
+        // var files=fs.readdirSync(inPath);
 
-        this.FindFilesRecursively(files, inPath);       
+        // this.FindFilesRecursively(files, inPath);       
     }
     
     public FindGcovFile(textEditor : vscode.TextEditor | undefined)
     {
-        console.log("editor: " + textEditor?.document.fileName);
         if (textEditor)
         {            
             var openFile = textEditor.document.fileName;
             var foundFiles = this.FindAllFilesWithSameName(openFile);
-            console.log("found: " + foundFiles);
             return this.GetGcovFile(foundFiles, openFile);
         }
     }
@@ -70,7 +67,6 @@ export class FileHandler
         {
             var filename = this.ExtractSrcNameFromGcovContent(gcovFiles[i]);
             var desiredFile = this.RemoveLineBreaksAndRelativePath(filename);
-            console.log ("comparing: " + openFileLowerCase + "  " + desiredFile); 
 
             if (openFileLowerCase.includes(path.normalize(desiredFile)))
                 return gcovFiles[i] ;
@@ -88,7 +84,7 @@ export class FileHandler
         var content = fs.readFileSync(gcovFile).toString();
         var firstLine = content.substring(0, content.indexOf('\n')).toLowerCase();
         var extractedFilename = firstLine.split('source:').pop();
-        console.log("extractedFilename: "+extractedFilename);
+
         return extractedFilename;
     }
     private RemoveLineBreaksAndRelativePath(path : string)
@@ -96,7 +92,7 @@ export class FileHandler
         var removeLinebreak = path.replace(/(\r\n|\n|\r)/gm, "");
         var onlyBackslash = removeLinebreak.replace(/\\/g, '//');
         var replaceDotsAndSlash = onlyBackslash.replace(/\.\.\//g, '');
-        console.log("replaceDotsAndSlash " + replaceDotsAndSlash);
+
         return replaceDotsAndSlash;
     }
 
