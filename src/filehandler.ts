@@ -37,6 +37,7 @@ export class FileHandler
         {            
             var openFile = textEditor.document.fileName;
             var foundFiles = this.FindAllFilesWithSameName(openFile);
+            console.log("found: " + foundFiles);
             return this.GetGcovFile(foundFiles, openFile);
         }
     }
@@ -68,8 +69,8 @@ export class FileHandler
 
     private GetFilename (file : string)
     {
-        var temp = file.replace(/\//g, '\\');
-        return temp.split('\\').pop();
+        var temp = file.replace(/\\/g, '\/');
+        return temp.split('\/').pop();
     }
 
     private ExtractSrcNameFromGcovContent(gcovFile : string)
