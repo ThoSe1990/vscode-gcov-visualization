@@ -15,6 +15,7 @@ export class FakeWorkspaceFolder implements vscode.WorkspaceFolder
 }
 
 
+
 class FakeTextLine implements vscode.TextLine
 {
     lineNumber!: number;    

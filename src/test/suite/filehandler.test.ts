@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import * as fakeEditor from './fake/fakes';
+import * as Fakes from './additional/fakes';
 import * as FileHandler from '../../filehandler'
 
 var fs = require('fs');
@@ -56,8 +56,8 @@ suite('Filehandler Test Suite', () => {
 		file = path.normalize(file);
 		var uri = vscode.Uri.parse(file);
 
-		var document = new fakeEditor.FakeTextDocument(uri);
-		var editor = new fakeEditor.FakeEditor(document);
+		var document = new Fakes.FakeTextDocument(uri);
+		var editor = new Fakes.FakeEditor(document);
 
 		var filehandler = new FileHandler.FileHandler();
 		filehandler.GetAllGcovFilesFromWorkspace(process.cwd());
@@ -75,8 +75,8 @@ suite('Filehandler Test Suite', () => {
 		var file = path.join(process.cwd() + '/src' + '/noGcovFile.cpp');
 		var uri = vscode.Uri.parse(file);
 
-		var document = new fakeEditor.FakeTextDocument(uri);
-		var editor = new fakeEditor.FakeEditor(document);
+		var document = new Fakes.FakeTextDocument(uri);
+		var editor = new Fakes.FakeEditor(document);
 
 		var filehandler = new FileHandler.FileHandler();
 		filehandler.GetAllGcovFilesFromWorkspace(process.cwd());

@@ -32,21 +32,80 @@ class Validation
 
 }
 
-export class ValidationExample extends Validation
+export class ValidationWorkspaceFolder extends Validation
 {
-	private file : string;
+	private WorkspaceFolder : vscode.WorkspaceFolder | undefined;
 
-	constructor (_file : string)
+	constructor (workpsacefolder : vscode.WorkspaceFolder[] | undefined)
 	{
 		super();
-		this.file = _file;
+		this.SetWorkspaceFolder(workpsacefolder);
 	}
 
 	public Rule ()
 	{
-		if (this.file)
+		if (this.WorkspaceFolder)
 			return true;
 
 		return false;
 	} 
+
+	public SetWorkspaceFolder(workpsacefolder : vscode.WorkspaceFolder[] | undefined) 
+	{
+		if (workpsacefolder)
+			this.WorkspaceFolder = workpsacefolder[0];
+		else 
+			this.WorkspaceFolder = undefined;
+	}
+
+	public GetWorkspaceFolder() { return this.WorkspaceFolder; }
+}
+
+
+export class ValidationTextEditor extends Validation
+{
+	private TextEditor : vscode.TextEditor | undefined;
+
+	constructor (editor : vscode.TextEditor | undefined)
+	{
+		super();
+		this.TextEditor = editor;
+	}
+
+	public Rule ()
+	{
+		if (this.TextEditor)
+			return true;
+
+		return false;
+	} 
+
+	public SetWorkspaceFolder(editor : vscode.TextEditor | undefined)
+	{
+		this.TextEditor = editor;
+	}
+}
+
+export class ValidationFeatureIsActive extends Validation
+{
+	private Active : boolean;
+
+	constructor (active : boolean)
+	{
+		super();
+		this.Active = active;
+	}
+
+	public Rule ()
+	{
+		if (this.Active)
+			return true;
+
+		return false;
+	} 
+
+	public SetState(active : boolean)
+	{
+		this.Active = active;
+	}
 }
