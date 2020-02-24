@@ -61,7 +61,7 @@ export class FileHandler
         {
             var filename = this.ExtractSrcNameFromGcovContent(gcovFiles[i]);
             var desiredFile = this.RemoveLineBreaksAndRelativePath(filename);
-
+            
             if (openFileLowerCase.includes(desiredFile))
                 return gcovFiles[i] ;
         }
@@ -78,15 +78,15 @@ export class FileHandler
         var content = fs.readFileSync(gcovFile).toString();
         var firstLine = content.substring(0, content.indexOf('\n')).toLowerCase();
         var extractedFilename = firstLine.split('source:').pop();
-        
+        console.log("extractedFilename: "+extractedFilename);
         return extractedFilename;
     }
     private RemoveLineBreaksAndRelativePath(path : string)
     {
         var removeLinebreak = path.replace(/(\r\n|\n|\r)/gm, "");
-        var onlyBackslash = removeLinebreak.replace(/\//g, '\\');
-        var replaceDotsAndSlash = onlyBackslash.replace(/\.\.\\/g, '');
-
+        var onlyBackslash = removeLinebreak.replace(/\\/g, '//');
+        var replaceDotsAndSlash = onlyBackslash.replace(/\.\.\//g, '');
+        console.log("replaceDotsAndSlash " + replaceDotsAndSlash);
         return replaceDotsAndSlash;
     }
 
