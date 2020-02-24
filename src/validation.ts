@@ -42,7 +42,7 @@ export class ValidationWorkspaceFolder extends Validation
 		this.SetWorkspaceFolder(workpsacefolder);
 	}
 
-	public Rule ()
+	protected Rule ()
 	{
 		if (this.WorkspaceFolder !== undefined)
 			return true;
@@ -72,7 +72,7 @@ export class ValidationTextEditor extends Validation
 		this.SetTextEditor(editor);
 	}
 
-	public Rule ()
+	protected Rule ()
 	{
 		if (this.TextEditor !== undefined)
 			return true;
@@ -96,7 +96,7 @@ export class ValidationFeatureIsActive extends Validation
 		this.SetState(active);
 	}
 
-	public Rule ()
+	protected Rule ()
 	{
 		if (this.Active)
 			return true;
