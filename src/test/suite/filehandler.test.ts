@@ -45,7 +45,8 @@ suite('Filehandler Test Suite', () => {
 		var editor = new Fakes.FakeEditor(document);
 
 		var filehandler = new FileHandler.FileHandler();
-		filehandler.GetAllGcovFilesFromWorkspace(process.cwd());
+		var _path = path.normalize(process.cwd());
+		filehandler.GetAllGcovFilesFromWorkspace(_path);
 
 		var result = filehandler.FindGcovFile(editor);
 		
@@ -62,7 +63,8 @@ suite('Filehandler Test Suite', () => {
 		var editor = new Fakes.FakeEditor(document);
 
 		var filehandler = new FileHandler.FileHandler();
-		filehandler.GetAllGcovFilesFromWorkspace(process.cwd());
+		var _path = path.normalize(process.cwd());
+		filehandler.GetAllGcovFilesFromWorkspace(_path);
 
 		var result = filehandler.FindGcovFile(editor);
 		

@@ -18,16 +18,25 @@ export class FileHandler
 	public GetAllGcovFilesFromWorkspace(inPath: string | undefined) 
 	{ 
         console.log("path: " + inPath);
-        if (fs.existsSync(inPath))
+        // if (fs.existsSync(inPath))
+        // {
+        //     var files=fs.readdirSync(inPath);
+        //     this.FindFilesRecursively(files, inPath); 
+        // }
+        // else
+        // {
+        //     console.log("no dir " + inPath);
+        //     return ;
+        // }      
+        if (!fs.existsSync(inPath))
         {
-            var files=fs.readdirSync(inPath);
-            this.FindFilesRecursively(files, inPath); 
+            console.log("no dir ",inPath);
+            return '';
         }
-        else
-        {
-            console.log("no dir " + inPath);
-            return ;
-        }      
+
+        var files=fs.readdirSync(inPath);
+
+        this.FindFilesRecursively(files, inPath);       
     }
     
     public FindGcovFile(textEditor : vscode.TextEditor | undefined)
@@ -55,14 +64,15 @@ export class FileHandler
     }
     private GetGcovFile (gcovFiles : string [], openFile : string)
     {
-        var openFileLowerCase = openFile.toLowerCase();
+        var openFileLowerCase = path.normalize(openFile.toLowerCase());
         
         for (var i = 0 ; i < gcovFiles.length ; i++ )
         {
             var filename = this.ExtractSrcNameFromGcovContent(gcovFiles[i]);
             var desiredFile = this.RemoveLineBreaksAndRelativePath(filename);
-            
-            if (openFileLowerCase.includes(desiredFile))
+            console.log ("comparing: " + openFileLowerCase + "  " + desiredFile); 
+
+            if (openFileLowerCase.includes(path.normalize(desiredFile)))
                 return gcovFiles[i] ;
         }
     } 
