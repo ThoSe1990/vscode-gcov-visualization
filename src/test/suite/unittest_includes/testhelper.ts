@@ -25,7 +25,7 @@ export function GetTestFilesDirectory()
 export function GetMainCppUri () 
 {
 	ChangeDirectoryToTestFiles();
-    var file = path.join(process.cwd() + '\\src' + '\\main.cpp');
+    var file = path.join(process.cwd() + '/src' + '/main.cpp');
     file = path.normalize(file);
     var uri = vscode.Uri.parse(file);
 
@@ -34,7 +34,7 @@ export function GetMainCppUri ()
 export function GetMainGcovUri () 
 {
 	ChangeDirectoryToTestFiles();
-    var file = path.join(process.cwd() + '\\build' + '\\main.cpp.gcov');
+    var file = path.join(process.cwd() + '/build' + '/main.cpp.gcov');
     file = path.normalize(file);
     var uri = vscode.Uri.parse(file);
 
@@ -44,7 +44,7 @@ export function GetMainGcovUri ()
 export function GetNoGcovFileCppUri () 
 {
 	ChangeDirectoryToTestFiles();
-    var file = path.join(process.cwd() + '\\src' + '\\noGcovFile.cpp');
+    var file = path.join(process.cwd() + '/src' + '/noGcovFile.cpp');
     file = path.normalize(file);
     var uri = vscode.Uri.parse(file);
 

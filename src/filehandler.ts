@@ -17,6 +17,7 @@ export class FileHandler
 
 	public GetAllGcovFilesFromWorkspace(inPath: string | undefined) 
 	{ 
+        console.log("path: " + inPath);
         if (fs.existsSync(inPath))
         {
             var files=fs.readdirSync(inPath);
