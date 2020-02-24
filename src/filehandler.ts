@@ -32,6 +32,7 @@ export class FileHandler
     
     public FindGcovFile(textEditor : vscode.TextEditor | undefined)
     {
+        console.log("editor: " + textEditor?.document.fileName);
         if (textEditor)
         {            
             var openFile = textEditor.document.fileName;
