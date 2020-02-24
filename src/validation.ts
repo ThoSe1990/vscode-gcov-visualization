@@ -44,7 +44,7 @@ export class ValidationWorkspaceFolder extends Validation
 
 	public Rule ()
 	{
-		if (this.WorkspaceFolder)
+		if (this.WorkspaceFolder !== undefined)
 			return true;
 
 		return false;
@@ -69,18 +69,18 @@ export class ValidationTextEditor extends Validation
 	constructor (editor : vscode.TextEditor | undefined)
 	{
 		super();
-		this.TextEditor = editor;
+		this.SetTextEditor(editor);
 	}
 
 	public Rule ()
 	{
-		if (this.TextEditor)
+		if (this.TextEditor !== undefined)
 			return true;
 
 		return false;
 	} 
 
-	public SetWorkspaceFolder(editor : vscode.TextEditor | undefined)
+	public SetTextEditor(editor : vscode.TextEditor | undefined)
 	{
 		this.TextEditor = editor;
 	}
@@ -88,12 +88,12 @@ export class ValidationTextEditor extends Validation
 
 export class ValidationFeatureIsActive extends Validation
 {
-	private Active : boolean;
+	private Active : boolean = false;
 
 	constructor (active : boolean)
 	{
 		super();
-		this.Active = active;
+		this.SetState(active);
 	}
 
 	public Rule ()

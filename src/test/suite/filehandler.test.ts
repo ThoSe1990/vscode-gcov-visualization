@@ -2,21 +2,12 @@ import * as assert from 'assert';
 import * as vscode from 'vscode';
 import * as Fakes from './additional/fakes';
 import * as FileHandler from '../../filehandler'
+import * as Additional from './additional/testfiles';
 
 var fs = require('fs');
 var path = require('path');
 
-function ChangeDirectoryToTestFiles()
-{
-	process.chdir(__dirname);
-	process.chdir("..");
-	process.chdir("..");
-	process.chdir("..");
-	process.chdir("src");
-	process.chdir("test");
-	process.chdir("suite");
-	process.chdir("testfiles");
-}
+
 
 suite('Filehandler Test Suite', () => {
 
@@ -33,10 +24,8 @@ suite('Filehandler Test Suite', () => {
 
 	test('GetAllGcovFilesFromWorkspace - in testfiles directory', () => {
 
-		ChangeDirectoryToTestFiles();
-
 		var filehandler = new FileHandler.FileHandler();
-		filehandler.GetAllGcovFilesFromWorkspace(process.cwd());
+		filehandler.GetAllGcovFilesFromWorkspace(Additional.GetTestFilesDirectory());
 		var GcovFiles = filehandler.GetGcovFiles();
 
 		assert.equal(true, GcovFiles.toString().includes('main.cpp.gcov'));
@@ -50,12 +39,9 @@ suite('Filehandler Test Suite', () => {
 	});
 
 	test('FindGcovFile - file with gcov file open', () => {
-	
-		ChangeDirectoryToTestFiles();
-		var file = path.join(process.cwd() + '\\src' + '\\main.cpp');
-		file = path.normalize(file);
-		var uri = vscode.Uri.parse(file);
 
+		var uri = Additional.GetMainCppUri();
+		
 		var document = new Fakes.FakeTextDocument(uri);
 		var editor = new Fakes.FakeEditor(document);
 
@@ -71,9 +57,7 @@ suite('Filehandler Test Suite', () => {
 
 	test('FindGcovFile - file without gcov file open', () => {
 	
-		ChangeDirectoryToTestFiles();
-		var file = path.join(process.cwd() + '/src' + '/noGcovFile.cpp');
-		var uri = vscode.Uri.parse(file);
+		var uri = Additional.GetNoGcovFileCppUri();
 
 		var document = new Fakes.FakeTextDocument(uri);
 		var editor = new Fakes.FakeEditor(document);

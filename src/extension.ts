@@ -75,7 +75,7 @@ function Update(textEditor: vscode.TextEditor | undefined)
 
 function UpdateEditorAndWorkspace(textEditor: vscode.TextEditor | undefined)
 {
-	ValidateTextEditor.SetWorkspaceFolder(textEditor);
+	ValidateTextEditor.SetTextEditor(textEditor);
 	ValidateWorkspaceFolder.SetWorkspaceFolder(vscode.workspace.workspaceFolders);
 }
 

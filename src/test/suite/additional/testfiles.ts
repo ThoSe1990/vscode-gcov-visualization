@@ -3,9 +3,10 @@ import * as vscode from 'vscode';
 var fs = require('fs');
 var path = require('path');
 
-export function ChangeDirectoryToTestFiles()
+function ChangeDirectoryToTestFiles()
 {
 	process.chdir(__dirname);
+	process.chdir("..");
 	process.chdir("..");
 	process.chdir("..");
 	process.chdir("..");
@@ -15,8 +16,15 @@ export function ChangeDirectoryToTestFiles()
 	process.chdir("testfiles");
 }
 
+export function GetTestFilesDirectory()
+{
+	ChangeDirectoryToTestFiles();
+	return process.cwd();
+}
+
 export function GetMainCppUri () 
 {
+	ChangeDirectoryToTestFiles();
     var file = path.join(process.cwd() + '\\src' + '\\main.cpp');
     file = path.normalize(file);
     var uri = vscode.Uri.parse(file);
@@ -26,6 +34,7 @@ export function GetMainCppUri ()
 
 export function GetNoGcovFileCppUri () 
 {
+	ChangeDirectoryToTestFiles();
     var file = path.join(process.cwd() + '\\src' + '\\noGcovFile.cpp');
     file = path.normalize(file);
     var uri = vscode.Uri.parse(file);

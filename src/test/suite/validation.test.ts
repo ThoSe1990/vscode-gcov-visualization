@@ -1,24 +1,13 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 import * as Fakes from './additional/fakes';
+import * as Additional from './additional/testfiles';
 import * as Validation from '../../validation';
-
 
 
 var fs = require('fs');
 var path = require('path');
 
-function ChangeDirectoryToTestFiles()
-{
-	process.chdir(__dirname);
-	process.chdir("..");
-	process.chdir("..");
-	process.chdir("..");
-	process.chdir("src");
-	process.chdir("test");
-	process.chdir("suite");
-	process.chdir("testfiles");
-}
 
 suite('Validation Test Suite', () => {
 
@@ -49,11 +38,9 @@ suite('Validation Test Suite', () => {
 	
 	});
 
-	test('validation workspace folder passed', () => {
-		ChangeDirectoryToTestFiles();
-		var file = path.join(process.cwd() + '\\src' + '\\main.cpp');
-		file = path.normalize(file);
-		var uri = vscode.Uri.parse(file);
+	test('validation open editor passed', () => {
+
+		var uri = Additional.GetMainCppUri();
 
 		var document = new Fakes.FakeTextDocument(uri);
 		var editor = new Fakes.FakeEditor(document);
@@ -69,6 +56,43 @@ suite('Validation Test Suite', () => {
 	
 	});
 
+	test('validation open editor failed', () => {
+		var validation = new Validation.ValidationTextEditor(undefined);
 
+		var rules = new Validation.ValidationRules();
+		rules.AddValidation(validation);
+		
+		var result = rules.Validate();
+
+		assert.equal(result, false);
+	
+	});
+
+
+	test('validation feature toggle is activated', () => {
+
+		var validation = new Validation.ValidationFeatureIsActive(true)
+
+		var rules = new Validation.ValidationRules();
+		rules.AddValidation(validation);
+
+		var result = rules.Validate();
+
+		assert.equal(result, true);
+	
+	});
+
+	test('validation feature toggle is deactivated', () => {
+
+		var validation = new Validation.ValidationFeatureIsActive(false)
+
+		var rules = new Validation.ValidationRules();
+		rules.AddValidation(validation);
+
+		var result = rules.Validate();
+
+		assert.equal(result, false);
+	
+	});
 
 });
