@@ -2,11 +2,12 @@
 #include <iostream>
 
 
-void FunctionNeverCalled()
+void FunctionNeverCalled(std::time_t t)
 {
     std::cout << t << " i was never called\n";
+    return ;
 }
-void FunctionTwiceCalled()
+void FunctionTwiceCalled(std::time_t t)
 {
     std::cout << t << " i was twice called\n";
 }
@@ -17,7 +18,7 @@ int main()
     std::cout << t << " seconds since 01-Jan-1970\n";
     std::cout << "std= " << __cplusplus << std::endl;
     
-    FunctionTwiceCalled();
-    FunctionTwiceCalled();
+    FunctionTwiceCalled(t);
+    FunctionTwiceCalled(t);
     return 0;
 }

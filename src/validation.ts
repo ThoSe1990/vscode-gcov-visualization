@@ -1,42 +1,27 @@
 import * as vscode from 'vscode';
 
-export class AllValidation
+
+
+export class ValidationRules 
 {
-	private Container : Validation[] = [];
-
-
-	constructor()
+	private ValidationRules : Validation[] = []; 
+	public AddValidation (validation : Validation )
 	{
-		var validWorkspaceFolder = new ValidWorkspaceFolder();
-		this.Container.push(validWorkspaceFolder);
-        var decorationStateValidation = new DecorationsDeactivated();
-		this.Container.push(decorationStateValidation);
-		var validEditor = new ValidEditor();
-		this.Container.push(validEditor);
-
+		this.ValidationRules.push(validation);
 	}
 
-	public ValidateAll()
+	public Validate () 
 	{
-
-
-        var validationResult = true;
-		this.Container.forEach(function(validation){
-            if ( validation.Validate() === false)
-            {
-                validationResult = false;
-                return;
-            }            
-        });
-        return validationResult;
+		var result;
+		for (var i = 0 ; i < this.ValidationRules.length ; i++)
+			result = this.ValidationRules[i].Validate();
+		return result;
 	}
-
 }
 
 class Validation
 {
 
-	
 	public Validate()
 	{
         return this.Rule();
@@ -47,69 +32,80 @@ class Validation
 
 }
 
-import { decorations } from './extension';
-
-class DecorationsDeactivated extends Validation
+export class ValidationWorkspaceFolder extends Validation
 {
-	public Rule()
+	private WorkspaceFolder : vscode.WorkspaceFolder | undefined;
+
+	constructor (workpsacefolder : vscode.WorkspaceFolder[] | undefined)
 	{
-        if (decorations.GetState() === true)
+		super();
+		this.SetWorkspaceFolder(workpsacefolder);
+	}
+
+	protected Rule ()
+	{
+		if (this.WorkspaceFolder !== undefined)
 			return true;
-		
-		console.log("Validation failed: decoration inactive");
-        return false;
-	}
-}
 
+		return false;
+	} 
 
-class ValidEditor extends Validation
-{
-	public Rule()
+	public SetWorkspaceFolder(workpsacefolder : vscode.WorkspaceFolder[] | undefined) 
 	{
-		if (ActualEditor.GetTextEditor())
-			return true;	
-
-		console.log("Validation failed: invalid file open");
-        return false;
+		if (workpsacefolder)
+			this.WorkspaceFolder = workpsacefolder[0];
+		else 
+			this.WorkspaceFolder = undefined;
 	}
+
+	public GetWorkspaceFolder() { return this.WorkspaceFolder; }
 }
-class internal_TextEditor 
+
+
+export class ValidationTextEditor extends Validation
 {
 	private TextEditor : vscode.TextEditor | undefined;
 
-	public SetTextEditor (textEditor : vscode.TextEditor | undefined)
+	constructor (editor : vscode.TextEditor | undefined)
 	{
-		this.TextEditor = textEditor;
+		super();
+		this.SetTextEditor(editor);
 	}
-	public GetTextEditor () { return this.TextEditor; }
+
+	protected Rule ()
+	{
+		if (this.TextEditor !== undefined)
+			return true;
+
+		return false;
+	} 
+
+	public SetTextEditor(editor : vscode.TextEditor | undefined)
+	{
+		this.TextEditor = editor;
+	}
 }
-export var ActualEditor = new internal_TextEditor();
 
-
-
-
-
-
-class ValidWorkspaceFolder extends Validation
+export class ValidationFeatureIsActive extends Validation
 {
-	public Rule()
-	{
-		if (ActualWorkspaceFolder.GetWorkspaceFolder())
-			return true;	
+	private Active : boolean = false;
 
-		console.log("Validation failed: invalid workspace folder open");
-        return false;
+	constructor (active : boolean)
+	{
+		super();
+		this.SetState(active);
+	}
+
+	protected Rule ()
+	{
+		if (this.Active)
+			return true;
+
+		return false;
+	} 
+
+	public SetState(active : boolean)
+	{
+		this.Active = active;
 	}
 }
-
-class internal_WorkspaceFolder
-{
-	private WorkspaceFolder : vscode.WorkspaceFolder[] | undefined;
-
-	public SetWorkspaceFolder (folder : vscode.WorkspaceFolder[] | undefined)
-	{
-		this.WorkspaceFolder = folder;
-	}
-	public GetWorkspaceFolder () { return this.WorkspaceFolder; }
-}
-export var ActualWorkspaceFolder = new internal_WorkspaceFolder();

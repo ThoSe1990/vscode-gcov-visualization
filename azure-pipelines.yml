@@ -32,7 +32,7 @@ steps:
     echo ">>> Compile"
     yarn && yarn compile
     echo ">>> Run test"
-    yarn && yarn compile && yarn test
+    yarn && yarn test
   displayName: Run Tests
   env:
     DISPLAY: ':99.0'

@@ -17,15 +17,25 @@ export class FileHandler
 
 	public GetAllGcovFilesFromWorkspace(inPath: string | undefined) 
 	{ 
-        if (!fs.existsSync(inPath))
+        if (fs.existsSync(inPath))
         {
-            console.log("no dir ",inPath);
-            return '';
+            var files=fs.readdirSync(inPath);
+            this.FindFilesRecursively(files, inPath); 
         }
+        else
+        {
+            console.log("no dir " + inPath);
+            return ;
+        }      
+        // if (!fs.existsSync(inPath))
+        // {
+        //     console.log("no dir ",inPath);
+        //     return '';
+        // }
 
-        var files=fs.readdirSync(inPath);
+        // var files=fs.readdirSync(inPath);
 
-        this.FindFilesRecursively(files, inPath);       
+        // this.FindFilesRecursively(files, inPath);       
     }
     
     public FindGcovFile(textEditor : vscode.TextEditor | undefined)
@@ -33,40 +43,40 @@ export class FileHandler
         if (textEditor)
         {            
             var openFile = textEditor.document.fileName;
-            var consideredFiles = this.FindAllFilesWithSameName(openFile);
-            return this.GetGcovFile(consideredFiles, openFile);
+            var foundFiles = this.FindAllFilesWithSameName(openFile);
+            return this.GetGcovFile(foundFiles, openFile);
         }
     }
 
     private FindAllFilesWithSameName(openFile : string)
     {
         var file = this.GetFilename(openFile);
-        var consideredFiles = [];
+        var foundFiles = [];
         for (var i = 0 ; i < this.GcovFilePaths.length ; i++)
         {
             if (this.GcovFilePaths[i].indexOf(file!) !== -1)
-            consideredFiles.push(this.GcovFilePaths[i]);
+            foundFiles.push(this.GcovFilePaths[i]);
         }
-        return consideredFiles;
+        return foundFiles;
     }
     private GetGcovFile (gcovFiles : string [], openFile : string)
     {
-        var openFileLowerCase = openFile.toLowerCase();
+        var openFileLowerCase = path.normalize(openFile.toLowerCase());
         
         for (var i = 0 ; i < gcovFiles.length ; i++ )
         {
             var filename = this.ExtractSrcNameFromGcovContent(gcovFiles[i]);
             var desiredFile = this.RemoveLineBreaksAndRelativePath(filename);
 
-            if (openFileLowerCase.includes(desiredFile))
+            if (openFileLowerCase.includes(path.normalize(desiredFile)))
                 return gcovFiles[i] ;
         }
     } 
 
     private GetFilename (file : string)
     {
-        var temp = file.replace(/\//g, '\\');
-        return temp.split('\\').pop();
+        var temp = file.replace(/\\/g, '\/');
+        return temp.split('\/').pop();
     }
 
     private ExtractSrcNameFromGcovContent(gcovFile : string)
@@ -74,14 +84,14 @@ export class FileHandler
         var content = fs.readFileSync(gcovFile).toString();
         var firstLine = content.substring(0, content.indexOf('\n')).toLowerCase();
         var extractedFilename = firstLine.split('source:').pop();
-        
+
         return extractedFilename;
     }
     private RemoveLineBreaksAndRelativePath(path : string)
     {
         var removeLinebreak = path.replace(/(\r\n|\n|\r)/gm, "");
-        var onlyBackslash = removeLinebreak.replace(/\//g, '\\');
-        var replaceDotsAndSlash = onlyBackslash.replace(/\.\.\\/g, '');
+        var onlyBackslash = removeLinebreak.replace(/\\/g, '//');
+        var replaceDotsAndSlash = onlyBackslash.replace(/\.\.\//g, '');
 
         return replaceDotsAndSlash;
     }
