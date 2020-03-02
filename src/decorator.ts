@@ -29,11 +29,13 @@ export class DecoratorHandler
 
     public GetState() { return this.State; }
     public SetState(state : Boolean) { this.State = state; }
-
     public GetNoOfDecorators() { return this.Container.length;}
 
-    public AddDecorator(textEditor : vscode.TextEditor , gcovFile : string )
+    public AddDecorator(textEditor : vscode.TextEditor , gcovFile : string | undefined )
     {
+        if (gcovFile == undefined)
+            return;
+
         for (var i = 0 ; i < COLORS.length ; i++)
         {
             if (this.NewDecorator(textEditor, COLORS[i]))
@@ -47,20 +49,7 @@ export class DecoratorHandler
           
     }
 
-    // private NoGcovFile(textEditor : vscode.TextEditor , gcovFiles : any)
-    // {
-    //     var path = textEditor.document.fileName;
-    //     var file = path.substring(path.lastIndexOf('\\')+1);
-
-    //     for (var i = 0 ; i < gcovFiles.length ; i++ )
-    //     {
-    //         if (gcovFiles[i].toString().indexOf(file) !== -1)
-    //             return gcovFiles[i];
-    //     }
-    //     return '';
-    // }
-
-    public GetDecorator(textEditor : vscode.TextEditor)
+    public GetDecoratorsOfTextEditor(textEditor : vscode.TextEditor)
     {
         var AllDecoraitors = new Array(); 
 
@@ -102,6 +91,8 @@ class DecoratorFactory
         {
             return new RedDecorator(textEditor, gcovFile, color);
         }
+
+        return undefined;
     }
 }
 
@@ -119,26 +110,22 @@ class internal_Decoration
     private Color : string;
 
     // Expression for Gcov Line <NO OF EXECUTION> : <ROW NUMBER IN SOURCE> : <ROW CONTENT>
-    // literally: "some spaces and digits" : "some spaces and digits (optional with *)" : "any content to end of line"
-    private GCOV_REGEXP : RegExp = new RegExp('^[\\s\\d(\\*)?]*:[\\s\\d]*:.*');
+    // literally: "some spaces and digits OR #####" : "some spaces and digits (optional with *)" : "any content to end of line"
+    private readonly GCOV_REGEXP : RegExp = new RegExp('^[\\s?:*(\\d\\|\\#\\#\\#\\#\\#)(\\*)?]*:[\\s\\d]*:.*');
 
     constructor ( textEditor : vscode.TextEditor , gcovfile : string, color : string) 
     {
         this.Color = color;
-
         this.TextEditor = textEditor; 
-
         this.SrcContent = fs.readFileSync(textEditor.document.fileName).toString().split("\n");
         this.GcovContent = fs.readFileSync(gcovfile).toString().split("\n");
-
         this.Decoration = vscode.window.createTextEditorDecorationType({  });
-
         this.DecoratorContainer = [];
     }
 
     public GetTextEditor() { return this.TextEditor; }
-    
     public GetColor() { return this.Color; }
+    public GetDecoratorContainer () { return this.DecoratorContainer; }
 
     public Reset()
     {
@@ -170,7 +157,7 @@ class internal_Decoration
             
         var executedCount = gcovLine[0];
         var row = parseInt(gcovLine[1]) - 1; // fileread starts at 0
-        var content = gcovLine[2]
+        var content = gcovLine[2];
 
         if (this.SrcContent[row].indexOf(content) !== -1)
             return {executedCount, row};            
@@ -191,7 +178,7 @@ class internal_Decoration
             return [
                 execution.toString().trim(),
                 rowNumber.toString().trim(),
-                content
+                content.toString().trimLeft()
             ];
             
         }
@@ -245,22 +232,34 @@ export class RedDecorator extends internal_Decoration
 
     public CreateDecoration( lineExecutionInformation : string, row : number)
     {
+        if (lineExecutionInformation.includes('####'))
+            this.CreateDecoratorInformation(lineExecutionInformation, row);
+
         var numberOfCalls = parseInt(lineExecutionInformation.toString());
         if (isNaN(numberOfCalls))
             return;
         
         if (numberOfCalls === 0)
-        {
-            var positions = super.GetPositions(row);
-            var hovermessage = this.CreateHoverMessage(numberOfCalls);
-            super.PushDecoration(positions, hovermessage);
-        }
+            this.CreateDecoratorInformation(numberOfCalls, row);
     }
 
     public DisplayDecorations()
     {
         this.Decoration = vscode.window.createTextEditorDecorationType({ backgroundColor: LIGHT_RED });
         this.TextEditor.setDecorations(this.Decoration,this.DecoratorContainer);
+    }
+
+    private CreateDecoratorInformation(lineExecutionInformation : any, row : number)
+    {
+        var positions = super.GetPositions(row);
+        var hovermessage = this.CreateHoverMessage(lineExecutionInformation);
+        super.PushDecoration(positions, hovermessage);
+    }
+
+    protected CreateHoverMessage(lineExecutionInformation : any) 
+    {
+        //default message, can be overwritten
+        return "line was not executed";
     }
 
 }

@@ -97,7 +97,7 @@ export class FakeEditor implements vscode.TextEditor
         throw new Error("Method not implemented.");
     }
     setDecorations(decorationType: vscode.TextEditorDecorationType, rangesOrOptions: vscode.Range[] | vscode.DecorationOptions[]): void {
-        throw new Error("Method not implemented.");
+        //throw new Error("Method not implemented.");
     }
     revealRange(range: vscode.Range, revealType?: vscode.TextEditorRevealType | undefined): void {
         throw new Error("Method not implemented.");

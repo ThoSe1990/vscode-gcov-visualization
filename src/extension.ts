@@ -5,7 +5,7 @@ import * as Decorator from './decorator';
 import * as Validation from './validation';
 
 
-export var Decorations = new Decorator.DecoratorHandler();
+export var DecorationsHandler = new Decorator.DecoratorHandler();
 export var filehandler = new FileHandler.FileHandler();
 
 var ValidateTextEditor = new Validation.ValidationTextEditor(undefined);
@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext)
 	
 	let ToggleGcovVisualization = vscode.commands.registerCommand('extension.toggleVisualization', () => {
 
-		if (Decorations.GetState())
+		if (DecorationsHandler.GetState())
 			DeactivateVisualization();
 		else
 			ActivateVisualization();
@@ -46,7 +46,7 @@ export function deactivate()
 
 function ActivateVisualization ()
 {
-   Decorations.SetState(true);
+   DecorationsHandler.SetState(true);
    ValidateState.SetState(true);
    SetAllDecorations();
 }
@@ -60,7 +60,7 @@ function SetAllDecorations()
 
 
 
-function Update(textEditor: vscode.TextEditor | undefined) 
+export function Update(textEditor: vscode.TextEditor | undefined) 
 {
 	UpdateEditorAndWorkspace(textEditor);
 	
@@ -69,7 +69,7 @@ function Update(textEditor: vscode.TextEditor | undefined)
 		UpdateGcovFilesInWorkspace();
 		
 		var gcovFile = filehandler.FindGcovFile(textEditor)
-		UpdateDecoration(textEditor!, gcovFile);
+		UpdateDecoration(textEditor, gcovFile);
 	}
 }
 
@@ -86,12 +86,12 @@ function UpdateGcovFilesInWorkspace()
 		filehandler.GetAllGcovFilesFromWorkspace(workspaceFolder.uri.fsPath);
 }
 
-function UpdateDecoration(textEditor: vscode.TextEditor, gcovFile : string | undefined)
+function UpdateDecoration(textEditor: vscode.TextEditor | undefined, gcovFile : string | undefined)
 {
 	if (gcovFile)
 	{
-		Decorations.AddDecorator(textEditor!, gcovFile);
-		var decorator = Decorations.GetDecorator(textEditor!);
+		DecorationsHandler.AddDecorator(textEditor!, gcovFile);
+		var decorator = DecorationsHandler.GetDecoratorsOfTextEditor(textEditor!);
 		if(decorator)
 		{
 			decorator.forEach( function( d ) {
@@ -111,7 +111,7 @@ function UpdateDecoration(textEditor: vscode.TextEditor, gcovFile : string | und
 
 function DeactivateVisualization ()
 {
-   Decorations.SetState(false);
+   DecorationsHandler.SetState(false);
    ValidateState.SetState(false);
    ResetDecorations();
 }
@@ -120,7 +120,7 @@ function ResetDecorations()
 	vscode.window.visibleTextEditors.forEach(Reset);
 }
 
-function Reset(textEditor: vscode.TextEditor | undefined)
+export function Reset(textEditor: vscode.TextEditor | undefined)
 {
 	if (textEditor)
 		ResetDecoration(textEditor);
@@ -128,7 +128,7 @@ function Reset(textEditor: vscode.TextEditor | undefined)
 
 function ResetDecoration (textEditor: vscode.TextEditor)
 {
-	var decorator = Decorations.GetDecorator(textEditor!);
+	var decorator = DecorationsHandler.GetDecoratorsOfTextEditor(textEditor!);
 	
 	if(decorator)
 	{
