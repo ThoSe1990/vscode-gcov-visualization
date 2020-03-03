@@ -1,4 +1,5 @@
 {
+	"publisher": "ThoSe",
 	"name": "gcov-visualization",
 	"displayName": "gcov-visualization",
 	"description": "gcov visualization",
@@ -20,14 +21,13 @@
 				"title": "Toggle Gcov"
 			}
 		],
-		"keybindings": [
-			{
-				"command": "extension.toggleVisualization",
-				"key": "ctrl+f1",
-				"mac": "cmd+f1",
-				"when": "editorTextFocus"
-			}
-		]
+		"keybindings": 
+		{
+			"command": "extension.toggleVisualization",
+			"key": "ctrl+f1",
+			"mac": "cmd+f1",
+			"when": "editorTextFocus"
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

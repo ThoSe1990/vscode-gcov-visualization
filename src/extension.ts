@@ -146,6 +146,7 @@ function DeactivateVisualization ()
    DecorationsHandler.SetState(false);
    ValidateState.SetState(false);
    ResetDecorations();
+   HideStatusbar();
 }
 function ResetDecorations()
 {
