@@ -8,7 +8,7 @@ import * as Decorator from '../../decorator';
 var fs = require('fs');
 var path = require('path');
 
-function SetDecorationOnTestFile()
+export function SetDecorationOnTestFile()
 {
 	var uriCpp = Helper.GetMainCppUri();
 	var uriGcov = Helper.GetMainGcovUri();
@@ -17,7 +17,6 @@ function SetDecorationOnTestFile()
 	var editor = new Fakes.FakeEditor(document);
 
 	var decoratorHandler = new Decorator.DecoratorHandler();
-
 	decoratorHandler.AddDecorator(editor, uriGcov.fsPath);
 
 	var decorators = decoratorHandler.GetDecoratorsOfTextEditor(editor);
@@ -34,33 +33,27 @@ function SetDecorationOnTestFile()
 function PathToInvalidFile()
 {
 	var uriCpp = Helper.GetNoGcovFileCppUri();
-
 	var document = new Fakes.FakeTextDocument(uriCpp);
 	var editor = new Fakes.FakeEditor(document);
 
 	var decoratorHandler = new Decorator.DecoratorHandler();
-
 	decoratorHandler.AddDecorator(editor, undefined);
-
 	var decorators = decoratorHandler.GetDecoratorsOfTextEditor(editor);
 
 	return decorators;
 }
 
 
-suite('Validation Test Suite', () => {
+suite('DecoratorHandler Test Suite', () => {
 
 	test('DecoratorHandler - editor and colors valid', () => {
 
 		var uri = Helper.GetMainCppUri();
-
 		var document = new Fakes.FakeTextDocument(uri);
 		var editor = new Fakes.FakeEditor(document);
 
 		var decoratorHandler = new Decorator.DecoratorHandler();
-
 		decoratorHandler.AddDecorator(editor, uri.fsPath);
-
 		var createdDecorators = decoratorHandler.GetDecoratorsOfTextEditor(editor);
 		
 		assert.equal(Decorator.COLORS.length, createdDecorators.length);
@@ -72,23 +65,26 @@ suite('Validation Test Suite', () => {
 		
 		var decorators = SetDecorationOnTestFile();
 		var redContainer = decorators[0].GetDecoratorContainer();
+		var expectedDecorators = 3;
 
-		assert.equal(redContainer.length, 3);
+		assert.equal(redContainer.length, expectedDecorators);
 	});
 
 	test('DecoratorHandler - decorate green color', () => {
 		
 		var decorators = SetDecorationOnTestFile();
 		var greenContainer = decorators[1].GetDecoratorContainer();
+		var expectedDecorators = 10;
 
-		assert.equal(greenContainer.length, 9);
+		assert.equal(greenContainer.length, expectedDecorators);
 	});
 
 	test('DecoratorHandler - file without gcov report open', () => {
 		
 		var decorators = PathToInvalidFile();
-		assert.equal(decorators.length, 0);
-		assert.equal(1, 1);
+		var expectedDecorators = 0;
+
+		assert.equal(decorators.length, expectedDecorators);
 	});
 
 });

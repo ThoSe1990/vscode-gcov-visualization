@@ -10,19 +10,19 @@
         -:    4:
         0:    5:void FunctionNeverCalled(std::time_t t)
         -:    6:{
-        0:    7:    std::cout << t << " i was never called\n";
+    #####:    7:    std::cout << t << " i was never called\n";
     #####:    8:    return ;
         -:    9:}
         2:   10:void FunctionTwiceCalled(std::time_t t)
         -:   11:{
         2:   12:    std::cout << t << " i was twice called\n";
-        -:   13:}
-        -:   14:       
-        1:   15:int main()
+        2:   13:}
+        -:   14:
+        1:   15:int main(int argc, char ** argv)
         -:   16:{
         1:   17:    std::time_t t = std::time(0);  // t is an integer type
         1:   18:    std::cout << t << " seconds since 01-Jan-1970\n";
-        1:   19:    std::cout << "std= " << __cplusplus << std::endl;
+        1:   19:    std::cout << "compiled wiht std= " << __cplusplus << std::endl;
         -:   20:    
         1:   21:    FunctionTwiceCalled(t);
         1:   22:    FunctionTwiceCalled(t);

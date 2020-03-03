@@ -27,15 +27,7 @@ export class FileHandler
             console.log("no dir " + inPath);
             return ;
         }      
-        // if (!fs.existsSync(inPath))
-        // {
-        //     console.log("no dir ",inPath);
-        //     return '';
-        // }
-
-        // var files=fs.readdirSync(inPath);
-
-        // this.FindFilesRecursively(files, inPath);       
+      
     }
     
     public FindGcovFile(textEditor : vscode.TextEditor | undefined)

@@ -3,8 +3,7 @@ import * as Extension from  '../../extension';
 import * as Fakes from './unittest_includes/fakes';
 import * as Helper from './unittest_includes/testhelper';
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
+
 import * as vscode from 'vscode';
 
 function GetValidEditor()
@@ -39,7 +38,6 @@ suite('Extension Test Suite', () => {
 		Extension.Update(editor);
 	});
 	test('Update - undefined no exception', () => {
-		
 		Extension.Update(undefined);
 	});
 
@@ -53,6 +51,14 @@ suite('Extension Test Suite', () => {
 	});
 	test('Reset - undefined no exception', () => {
 		Extension.Reset(undefined);
+	});
+
+	test('UpdateStatusbar - valid file no exception', () => {
+		var editor = GetValidEditor();
+		Extension.UpdateStatusbar(editor);
+	});
+	test('UpdateStatusbar - undefined editor no exception', () => {
+		Extension.UpdateStatusbar(undefined);
 	});
 
 });

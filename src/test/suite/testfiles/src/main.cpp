@@ -12,11 +12,11 @@ void FunctionTwiceCalled(std::time_t t)
     std::cout << t << " i was twice called\n";
 }
 
-int main()
+int main(int argc, char ** argv)
 {
     std::time_t t = std::time(0);  // t is an integer type
     std::cout << t << " seconds since 01-Jan-1970\n";
-    std::cout << "std= " << __cplusplus << std::endl;
+    std::cout << "compiled wiht std= " << __cplusplus << std::endl;
     
     FunctionTwiceCalled(t);
     FunctionTwiceCalled(t);

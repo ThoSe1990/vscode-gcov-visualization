@@ -1,17 +1,18 @@
 
 import * as vscode from 'vscode';
-import * as FileHandler from './filehandler';
-import * as Decorator from './decorator';
-import * as Validation from './validation';
+import * as _fileHandler from './filehandler';
+import * as _decorator from './decorator';
+import * as _validation from './validation';
+import * as _coverage from './coverage';
 
+export var DecorationsHandler = new _decorator.DecoratorHandler();
+export var filehandler = new _fileHandler.FileHandler();
 
-export var DecorationsHandler = new Decorator.DecoratorHandler();
-export var filehandler = new FileHandler.FileHandler();
-
-var ValidateTextEditor = new Validation.ValidationTextEditor(undefined);
-var ValidateWorkspaceFolder = new Validation.ValidationWorkspaceFolder(undefined);
-var ValidateState = new Validation.ValidationFeatureIsActive(false);
-var Validations = new Validation.ValidationRules();
+var ValidateTextEditor = new _validation.ValidationTextEditor(undefined);
+var ValidateWorkspaceFolder = new _validation.ValidationWorkspaceFolder(undefined);
+var ValidateState = new _validation.ValidationFeatureIsActive(false);
+var Validations = new _validation.ValidationRules();
+var Coverage = new _coverage.Coverage();
 
 function InitValidations()
 {
@@ -20,6 +21,7 @@ function InitValidations()
 	Validations.AddValidation(ValidateState);
 }
 
+let statusbar: vscode.StatusBarItem;
 
 
 export function activate(context: vscode.ExtensionContext) 
@@ -36,7 +38,10 @@ export function activate(context: vscode.ExtensionContext)
 			ActivateVisualization();
  	});
 	
-	context.subscriptions.push(ToggleGcovVisualization, activeEditorDidChanged);
+	
+	statusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+
+	context.subscriptions.push(ToggleGcovVisualization, activeEditorDidChanged, statusbar);
 
 }
 export function deactivate() 
@@ -58,6 +63,33 @@ function SetAllDecorations()
 
 
 
+export function UpdateStatusbar(textEditor: vscode.TextEditor | undefined)
+{
+	if(textEditor && statusbar)
+	{
+		HideStatusbar();
+		CalculateAndDisplayCoverage(textEditor)
+	}
+}
+function HideStatusbar()
+{
+	Coverage.HideStatusbar(statusbar);
+}
+function CalculateAndDisplayCoverage(textEditor: vscode.TextEditor)
+{
+
+	var decorators = DecorationsHandler.GetDecoratorsOfTextEditor(textEditor);
+	if (decorators)
+	{
+		Coverage.SetLinesExecuted( decorators[1].GetDecoratorContainer().length );
+		Coverage.SetLinesNotExecuted( decorators[0].GetDecoratorContainer().length );
+		Coverage.Calculate();
+		Coverage.ShowStatusbar(statusbar);	
+	}
+	
+}
+
+
 
 
 export function Update(textEditor: vscode.TextEditor | undefined) 
@@ -70,6 +102,7 @@ export function Update(textEditor: vscode.TextEditor | undefined)
 		
 		var gcovFile = filehandler.FindGcovFile(textEditor)
 		UpdateDecoration(textEditor, gcovFile);
+		UpdateStatusbar(vscode.window.activeTextEditor);
 	}
 }
 
@@ -98,12 +131,11 @@ function UpdateDecoration(textEditor: vscode.TextEditor | undefined, gcovFile : 
 				d.Reset();
 				d.SetDecoration();
 			});
-		}	
+		}
 	}	
 	else 
 		console.log("Invalid file open: " + gcovFile);
 }
-
 
 
 
@@ -137,3 +169,7 @@ function ResetDecoration (textEditor: vscode.TextEditor)
 		});
 	}
 }
+
+
+
+
