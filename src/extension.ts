@@ -6,7 +6,7 @@ import * as _validation from './validation';
 import * as _coverage from './coverage';
 
 export var DecorationsHandler = new _decorator.DecoratorHandler();
-export var filehandler = new _fileHandler.FileHandler();
+export var filehandler = new _fileHandler.GcovFileHandler();
 
 var ValidateTextEditor = new _validation.ValidationTextEditor(undefined);
 var ValidateWorkspaceFolder = new _validation.ValidationWorkspaceFolder(undefined);
@@ -116,7 +116,7 @@ function UpdateGcovFilesInWorkspace()
 {
 	var workspaceFolder = ValidateWorkspaceFolder.GetWorkspaceFolder();
 	if(workspaceFolder)
-		filehandler.GetAllGcovFilesFromWorkspace(workspaceFolder.uri.fsPath, _fileHandler.FileHandler.GCOV_FILE_EXTENSION);
+		filehandler.GetAllFilesFromWorkspace(workspaceFolder.uri.fsPath, filehandler.FILE_EXTENSION);
 }
 
 function UpdateDecoration(textEditor: vscode.TextEditor | undefined, gcovFile : string | undefined)

@@ -12,29 +12,28 @@ suite('Filehandler Test Suite', () => {
 
 	test('GetAllGcovFilesFromWorkspace - no path', () => {
 		
-		var filehandler = new FileHandler.FileHandler();
-		filehandler.GetAllGcovFilesFromWorkspace(undefined, FileHandler.FileHandler.GCOV_FILE_EXTENSION);
+		var filehandler = new FileHandler.GcovFileHandler();
+		filehandler.GetAllFilesFromWorkspace(undefined, filehandler.FILE_EXTENSION);
 
-		var GcovFiles = filehandler.GetGcovFiles();
+		var GcovFiles = filehandler.GetFiles();
 
 		assert.equal( GcovFiles.length , 0);
 
 	});
 
-/*
 
 	test('GetAllGcovFilesFromWorkspace - in testfiles directory', () => {
 
-		var filehandler = new FileHandler.FileHandler();
-		filehandler.GetAllGcovFilesFromWorkspace(Helper.GetTestFilesDirectory(), FileHandler.FileHandler.GCOV_FILE_EXTENSION);
-		var GcovFiles = filehandler.GetGcovFiles();
+		var filehandler = new FileHandler.GcovFileHandler();
+		filehandler.GetAllFilesFromWorkspace(Helper.GetTestFilesDirectory(), filehandler.FILE_EXTENSION);
+		var GcovFiles = filehandler.GetFiles();
 
 		assert.equal(GcovFiles.toString().includes('main.cpp.gcov'), true);
 		assert.equal(GcovFiles.length, 1);
 	});
 
 	test('FindGcovFile - no text editor', () => {
-		var filehandler = new FileHandler.FileHandler();
+		var filehandler = new FileHandler.GcovFileHandler();
 		var result = filehandler.FindGcovFile(undefined);
 		assert.equal(result, undefined);
 	});
@@ -46,9 +45,9 @@ suite('Filehandler Test Suite', () => {
 		var document = new Fakes.FakeTextDocument(uri);
 		var editor = new Fakes.FakeEditor(document);
 
-		var filehandler = new FileHandler.FileHandler();
+		var filehandler = new FileHandler.GcovFileHandler();
 		var _path = path.normalize(process.cwd());
-		filehandler.GetAllGcovFilesFromWorkspace(_path, FileHandler.FileHandler.GCOV_FILE_EXTENSION);
+		filehandler.GetAllFilesFromWorkspace(_path, filehandler.FILE_EXTENSION);
 
 		var result = filehandler.FindGcovFile(editor);
 		
@@ -64,13 +63,13 @@ suite('Filehandler Test Suite', () => {
 		var document = new Fakes.FakeTextDocument(uri);
 		var editor = new Fakes.FakeEditor(document);
 
-		var filehandler = new FileHandler.FileHandler();
+		var filehandler = new FileHandler.GcovFileHandler();
 		var _path = path.normalize(process.cwd());
-		filehandler.GetAllGcovFilesFromWorkspace(_path, FileHandler.FileHandler.GCOV_FILE_EXTENSION);
+		filehandler.GetAllFilesFromWorkspace(_path, filehandler.FILE_EXTENSION);
 
 		var result = filehandler.FindGcovFile(editor);
 		
 		assert.equal(result, undefined);
 	});
-*/
+
 });
