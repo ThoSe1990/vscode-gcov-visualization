@@ -34,7 +34,7 @@ export class FileHandler
     {
         if (textEditor)
         {            
-            var openFile = textEditor.document.uri.fsPath;
+            var openFile = textEditor.document.fileName;
             var foundFiles = this.FindAllFilesWithSameName(openFile);
             return this.GetGcovFile(foundFiles, openFile);
         }
@@ -59,7 +59,8 @@ export class FileHandler
         {
             var filename = this.ExtractSrcNameFromGcovContent(gcovFiles[i]);
             var desiredFile = this.RemoveLineBreaksAndRelativePath(filename);
-            var normalizedFile = path.normalize(desiredFile);
+            var tmp = desiredFile.split(":");
+            var normalizedFile = (tmp.length > 1) ? path.normalize(tmp[1]) : path.normalize(tmp);
             if (openFileLowerCase.includes(normalizedFile))
                 return gcovFiles[i] ;
         }
