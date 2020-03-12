@@ -116,7 +116,7 @@ function UpdateGcovFilesInWorkspace()
 {
 	var workspaceFolder = ValidateWorkspaceFolder.GetWorkspaceFolder();
 	if(workspaceFolder)
-		filehandler.GetAllGcovFilesFromWorkspace(workspaceFolder.uri.fsPath);
+		filehandler.GetAllGcovFilesFromWorkspace(workspaceFolder.uri.fsPath, _fileHandler.FileHandler.GCOV_FILE_EXTENSION);
 }
 
 function UpdateDecoration(textEditor: vscode.TextEditor | undefined, gcovFile : string | undefined)

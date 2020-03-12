@@ -1,0 +1,3 @@
+D:/git/stuff/vsCodeExtension/vscode-gcov-visualization/src/test/suite/testfiles/build/CMakeFiles/testing.dir
+D:/git/stuff/vsCodeExtension/vscode-gcov-visualization/src/test/suite/testfiles/build/CMakeFiles/edit_cache.dir
+D:/git/stuff/vsCodeExtension/vscode-gcov-visualization/src/test/suite/testfiles/build/CMakeFiles/rebuild_cache.dir

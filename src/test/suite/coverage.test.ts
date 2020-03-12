@@ -21,7 +21,7 @@ suite('Coverage Test Suite', () => {
 		coverage.SetLinesNotExecuted(redContainer.length);
 		coverage.Calculate();
 
-		var expectedCoverage = 10/13
+		var expectedCoverage = 8/11
 		var expectedCoverageInPercent = expectedCoverage * 100;
 		assert.equal(coverage.GetCoverage() , expectedCoverageInPercent );
 	});

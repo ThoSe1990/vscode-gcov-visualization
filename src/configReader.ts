@@ -13,6 +13,7 @@ export class ConfigReader
     private JsonContent : any;
     private GcovExecutablePath : string = "";
 
+    public GetGcovPath () { return this.GcovExecutablePath; }
 
     constructor() { }
 
@@ -23,19 +24,20 @@ export class ConfigReader
         this.JsonContent = JSON.parse( fs.readFileSync(p).toString() );   
     }
 
-    public SetGcovExecutablePath()
+    public FindGcov()
     {
-        this.GcovExecutablePath = this.JsonContent.gcov_path;
-        console.log("path: " + this.GcovExecutablePath);
+        try {
+            this.GcovExecutablePath = this.JsonContent.gcov_path;
+        } catch (error) {
+            this.GcovExecutablePath = "";
+        }
     }
-    public GetGcovExecutablePath(){return this.GcovExecutablePath;}
 
-    public PrintVersion()
+    public CustomCommand(command : string)
     {
         const cp = require('child_process')
-		var result = cp.exec(this.GcovExecutablePath + " --version", (err: string, stdout: string, stderr: string) => {
-                console.log('stdout: ' + stdout);
-                return stdout;
+		var result = cp.exec(this.GcovExecutablePath + " " + command, (err: string, stdout: string, stderr: string) => {
+            return stdout;
         });
         return result;
     }

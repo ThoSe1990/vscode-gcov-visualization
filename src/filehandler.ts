@@ -8,19 +8,19 @@ var fs = require('fs');
 
 export class FileHandler
 {
-    private readonly GCOV_FILE_EXTENSION = '.gcov';
+    public static GCOV_FILE_EXTENSION : string = ".gcov";
 
     private GcovFilePaths : string[] = [];  
     public GetGcovFiles() { return this.GcovFilePaths; }
 
 	constructor () {}
 
-	public GetAllGcovFilesFromWorkspace(inPath: string | undefined) 
+	public GetAllGcovFilesFromWorkspace(inPath: string | undefined, fileExtension : string) 
 	{ 
         if (fs.existsSync(inPath))
         {
             var files=fs.readdirSync(inPath);
-            this.FindFilesRecursively(files, inPath); 
+            this.FindFilesRecursively(files, inPath, fileExtension); 
         }
         else
         {
@@ -34,7 +34,7 @@ export class FileHandler
     {
         if (textEditor)
         {            
-            var openFile = textEditor.document.fileName;
+            var openFile = textEditor.document.uri.fsPath;
             var foundFiles = this.FindAllFilesWithSameName(openFile);
             return this.GetGcovFile(foundFiles, openFile);
         }
@@ -59,8 +59,8 @@ export class FileHandler
         {
             var filename = this.ExtractSrcNameFromGcovContent(gcovFiles[i]);
             var desiredFile = this.RemoveLineBreaksAndRelativePath(filename);
-
-            if (openFileLowerCase.includes(path.normalize(desiredFile)))
+            var normalizedFile = path.normalize(desiredFile);
+            if (openFileLowerCase.includes(normalizedFile))
                 return gcovFiles[i] ;
         }
     } 
@@ -89,22 +89,22 @@ export class FileHandler
     }
 
 
-    private FindFilesRecursively(files: string | any[], inPath: any)
+    private FindFilesRecursively(files: string | any[], inPath: any,  fileExtension : string)
     {
         for( var i = 0 ; i < files.length ; i++ )
         {
             var filename = path.join(inPath,files[i]);
-            this.CheckFilename(filename);
+            this.CheckFilename(filename, fileExtension);
         };
     }
 
-    private CheckFilename(filename: any | string[])
+    private CheckFilename(filename: any | string[],  fileExtension : string)
     {
             if ( fs.lstatSync(filename).isDirectory() )
             {
-                this.GetAllGcovFilesFromWorkspace(filename);
+                this.GetAllGcovFilesFromWorkspace(filename, fileExtension);
             }
-            else if (filename.indexOf(this.GCOV_FILE_EXTENSION) >=0 ) 
+            else if (filename.indexOf(fileExtension) >=0 ) 
             {
                 this.AddGcovFile(filename);
             };

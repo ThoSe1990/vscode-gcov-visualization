@@ -1,0 +1,27 @@
+        -:    0:Source:D:/git/stuff/vsCodeExtension/vscode-gcov-visualization/src/test/suite/testfiles/src/main.cpp
+        -:    0:Graph:D:\git\stuff\vsCodeExtension\vscode-gcov-visualization\src\test\suite\testfiles\build\CMakeFiles\testing.dir\src\main.cpp.gcno
+        -:    0:Data:D:\git\stuff\vsCodeExtension\vscode-gcov-visualization\src\test\suite\testfiles\build\CMakeFiles\testing.dir\src\main.cpp.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:
+        -:    2:#include <iostream>
+        -:    3:
+        -:    4:
+    #####:    5:void FunctionNeverCalled(int t)
+        -:    6:{
+    #####:    7:    std::cout << t << " i was never called " << std::endl;
+    #####:    8:}
+        2:    9:void FunctionTwiceCalled(int i)
+        -:   10:{
+        2:   11:    std::cout << "i was twice called, arg i: " << i << std::endl;
+        2:   12:}
+        -:   13:
+        1:   14:int main(int argc, char ** argv)
+        -:   15:{
+        -:   16:    int var;
+        1:   17:    var = 10;
+        -:   18:
+        1:   19:    FunctionTwiceCalled(var);
+        1:   20:    FunctionTwiceCalled(var);
+        1:   21:    return 0;
+        -:   22:}
