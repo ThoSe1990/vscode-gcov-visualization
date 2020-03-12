@@ -20,14 +20,7 @@
 				"command": "extension.toggleVisualization",
 				"title": "Toggle Gcov"
 			}
-		],
-		"keybindings": 
-		{
-			"command": "extension.toggleVisualization",
-			"key": "ctrl+f1",
-			"mac": "cmd+f1",
-			"when": "editorTextFocus"
-		}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
