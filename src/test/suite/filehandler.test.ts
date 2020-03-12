@@ -21,6 +21,8 @@ suite('Filehandler Test Suite', () => {
 
 	});
 
+/*
+
 	test('GetAllGcovFilesFromWorkspace - in testfiles directory', () => {
 
 		var filehandler = new FileHandler.FileHandler();
@@ -70,5 +72,5 @@ suite('Filehandler Test Suite', () => {
 		
 		assert.equal(result, undefined);
 	});
-
+*/
 });
