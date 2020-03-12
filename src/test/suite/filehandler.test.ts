@@ -17,7 +17,7 @@ suite('Filehandler Test Suite', () => {
 
 		var GcovFiles = filehandler.GetGcovFiles();
 
-		assert.equal(true, GcovFiles.length === 0);
+		assert.equal( GcovFiles.length , 0);
 
 	});
 
