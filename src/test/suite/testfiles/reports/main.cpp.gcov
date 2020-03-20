@@ -1,6 +1,6 @@
         -:    0:Source:D:/git/stuff/vsCodeExtension/vscode-gcov-visualization/src/test/suite/testfiles/src/main.cpp
-        -:    0:Graph:D:\git\stuff\vsCodeExtension\vscode-gcov-visualization\src\test\suite\testfiles\build\CMakeFiles\testing.dir\src\main.cpp.gcno
-        -:    0:Data:D:\git\stuff\vsCodeExtension\vscode-gcov-visualization\src\test\suite\testfiles\build\CMakeFiles\testing.dir\src\main.cpp.gcda
+        -:    0:Graph:d:\git\stuff\vsCodeExtension\vscode-gcov-visualization\src\test\suite\testfiles\build\CMakeFiles\testing.dir\src\main.cpp.gcno
+        -:    0:Data:d:\git\stuff\vsCodeExtension\vscode-gcov-visualization\src\test\suite\testfiles\build\CMakeFiles\testing.dir\src\main.cpp.gcda
         -:    0:Runs:1
         -:    0:Programs:1
         -:    1:

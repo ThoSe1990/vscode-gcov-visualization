@@ -13,7 +13,7 @@ suite('Filehandler Test Suite', () => {
 	test('GetAllGcovFilesFromWorkspace - no path', () => {
 		
 		var filehandler = new FileHandler.GcovFileHandler();
-		filehandler.GetAllFilesFromWorkspace(undefined, filehandler.FILE_EXTENSION);
+		filehandler.GetAllFilesFromWorkspace(undefined);
 
 		var GcovFiles = filehandler.GetFiles();
 
@@ -25,7 +25,7 @@ suite('Filehandler Test Suite', () => {
 	test('GetAllGcovFilesFromWorkspace - in testfiles directory', () => {
 
 		var filehandler = new FileHandler.GcovFileHandler();
-		filehandler.GetAllFilesFromWorkspace(Helper.GetTestFilesDirectory(), filehandler.FILE_EXTENSION);
+		filehandler.GetAllFilesFromWorkspace(Helper.GetTestFilesDirectory());
 		var GcovFiles = filehandler.GetFiles();
 
 		assert.equal(GcovFiles.toString().includes('main.cpp.gcov'), true);
@@ -47,7 +47,7 @@ suite('Filehandler Test Suite', () => {
 
 		var filehandler = new FileHandler.GcovFileHandler();
 		var _path = path.normalize(process.cwd());
-		filehandler.GetAllFilesFromWorkspace(_path, filehandler.FILE_EXTENSION);
+		filehandler.GetAllFilesFromWorkspace(_path);
 
 		var result = filehandler.FindGcovFile(editor);
 		
@@ -65,7 +65,7 @@ suite('Filehandler Test Suite', () => {
 
 		var filehandler = new FileHandler.GcovFileHandler();
 		var _path = path.normalize(process.cwd());
-		filehandler.GetAllFilesFromWorkspace(_path, filehandler.FILE_EXTENSION);
+		filehandler.GetAllFilesFromWorkspace(_path);
 
 		var result = filehandler.FindGcovFile(editor);
 		

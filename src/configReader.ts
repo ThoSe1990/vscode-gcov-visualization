@@ -33,13 +33,31 @@ export class ConfigReader
         }
     }
 
-    public CustomCommand(command : string)
+    public RunGcov(command : string)
     {
+        this.ChangeDirectory();
+
         const cp = require('child_process')
 		var result = cp.exec(this.GcovExecutablePath + " " + command, (err: string, stdout: string, stderr: string) => {
             return stdout;
         });
+
         return result;
+    }
+
+    private ChangeDirectory()
+    {
+        if (this.JsonContent.makefile_directory)
+        {
+            process.chdir(this.JsonContent.makefile_directory);    
+            return;
+        }
+        if (this.JsonContent.gcov_output)
+            if (!fs.existsSync(this.JsonContent.gcov_output))
+            {
+                fs.mkdirSync(this.JsonContent.gcov_output);
+                process.chdir(this.JsonContent.gcov_output);
+            }
     }
 
 }

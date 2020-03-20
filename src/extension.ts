@@ -4,9 +4,10 @@ import * as _fileHandler from './filehandler';
 import * as _decorator from './decorator';
 import * as _validation from './validation';
 import * as _coverage from './coverage';
+import * as _reportCreator from './reportCreator';
 
 export var DecorationsHandler = new _decorator.DecoratorHandler();
-export var filehandler = new _fileHandler.GcovFileHandler();
+export var gcovFilehanlder = new _fileHandler.GcovFileHandler();
 
 var ValidateTextEditor = new _validation.ValidationTextEditor(undefined);
 var ValidateWorkspaceFolder = new _validation.ValidationWorkspaceFolder(undefined);
@@ -36,14 +37,49 @@ export function activate(context: vscode.ExtensionContext)
 			DeactivateVisualization();
 		else
 			ActivateVisualization();
- 	});
+	 });	
+	 
+	let CreateReport = vscode.commands.registerCommand('extension.createReports', () => {
+
+		CreateReports();
+	});
 	
 	
 	statusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
 
-	context.subscriptions.push(ToggleGcovVisualization, activeEditorDidChanged, statusbar);
+	context.subscriptions.push(ToggleGcovVisualization, activeEditorDidChanged, statusbar, CreateReport);
 
 }
+
+
+function CreateReports()
+{
+	var r = new _reportCreator.ReportCreator();
+	r.ReadConfigFile();
+	r.FindGcov();
+
+	var files = GetGcdaFiles();
+
+	for (var i = 0 ; i < files.length ; i++)
+		r.RunGcov(files[i]);
+}
+
+function GetGcdaFiles()
+{
+	var filehandler = new _fileHandler.FileHandler(".gcda");
+	var workspaceFolder = vscode.workspace.workspaceFolders;
+	if(workspaceFolder)
+		filehandler.GetAllFilesFromWorkspace(workspaceFolder[0].uri.fsPath);
+	return filehandler.GetFiles();
+}
+
+
+
+
+
+
+
+
 export function deactivate() 
 {
 	ResetDecorations();
@@ -100,7 +136,7 @@ export function Update(textEditor: vscode.TextEditor | undefined)
 	{
 		UpdateGcovFilesInWorkspace();
 		
-		var gcovFile = filehandler.FindGcovFile(textEditor)
+		var gcovFile = gcovFilehanlder.FindGcovFile(textEditor)
 		UpdateDecoration(textEditor, gcovFile);
 		UpdateStatusbar(vscode.window.activeTextEditor);
 	}
@@ -116,7 +152,7 @@ function UpdateGcovFilesInWorkspace()
 {
 	var workspaceFolder = ValidateWorkspaceFolder.GetWorkspaceFolder();
 	if(workspaceFolder)
-		filehandler.GetAllFilesFromWorkspace(workspaceFolder.uri.fsPath, filehandler.FILE_EXTENSION);
+		gcovFilehanlder.GetAllFilesFromWorkspace(workspaceFolder.uri.fsPath);
 }
 
 function UpdateDecoration(textEditor: vscode.TextEditor | undefined, gcovFile : string | undefined)
@@ -170,6 +206,10 @@ function ResetDecoration (textEditor: vscode.TextEditor)
 		});
 	}
 }
+
+
+
+
 
 
 
