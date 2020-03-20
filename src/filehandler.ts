@@ -8,14 +8,17 @@ var fs = require('fs');
 
 export class FileHandler
 {
-    private readonly GCOV_FILE_EXTENSION = '.gcov';
+    public readonly FILE_EXTENSION : string;
 
-    private GcovFilePaths : string[] = [];  
-    public GetGcovFiles() { return this.GcovFilePaths; }
+    protected AllFiles : string[] = [];  
+    public GetFiles() { return this.AllFiles; }
 
-	constructor () {}
+    constructor (fileExtension : string ) 
+    {
+        this.FILE_EXTENSION = fileExtension;
+    }
 
-	public GetAllGcovFilesFromWorkspace(inPath: string | undefined) 
+	public GetAllFilesFromWorkspace(inPath: string | undefined) 
 	{ 
         if (fs.existsSync(inPath))
         {
@@ -27,16 +30,56 @@ export class FileHandler
             console.log("no dir " + inPath);
             return ;
         }      
-      
     }
     
-    public FindGcovFile(textEditor : vscode.TextEditor | undefined)
+
+    private FindFilesRecursively(files: string | any[], inPath: any)
+    {
+        for( var i = 0 ; i < files.length ; i++ )
+        {
+            var filename = path.join(inPath,files[i]);
+            this.CheckFilename(filename);
+        };
+    }
+
+    private CheckFilename(filename: any | string[])
+    {
+            if ( fs.lstatSync(filename).isDirectory() )
+                this.GetAllFilesFromWorkspace(filename);
+            else if (filename.indexOf(this.FILE_EXTENSION) >=0 ) 
+                this.AddGcovFile(filename);
+    
+    }
+
+    private AddGcovFile(file : string)
+    {
+        if ( this.AllFiles.includes(file) )
+            return ;
+        this.AllFiles.push(file);
+    } 
+
+
+
+}
+
+
+
+export class GcovFileHandler extends FileHandler
+{
+    constructor()
+    {
+        super(".gcov");
+    }
+
+    
+    public FindGcovFile(textEditor : vscode.TextEditor | undefined) 
     {
         if (textEditor)
         {            
             var openFile = textEditor.document.fileName;
             var foundFiles = this.FindAllFilesWithSameName(openFile);
-            return this.GetGcovFile(foundFiles, openFile);
+            var result = this.GetGcovFile(foundFiles, openFile);
+            return result;
         }
     }
 
@@ -44,10 +87,10 @@ export class FileHandler
     {
         var file = this.GetFilename(openFile);
         var foundFiles = [];
-        for (var i = 0 ; i < this.GcovFilePaths.length ; i++)
+        for (var i = 0 ; i < this.AllFiles.length ; i++)
         {
-            if (this.GcovFilePaths[i].indexOf(file!) !== -1)
-            foundFiles.push(this.GcovFilePaths[i]);
+            if (this.AllFiles[i].indexOf(file!) !== -1)
+            foundFiles.push(this.AllFiles[i]);
         }
         return foundFiles;
     }
@@ -59,8 +102,9 @@ export class FileHandler
         {
             var filename = this.ExtractSrcNameFromGcovContent(gcovFiles[i]);
             var desiredFile = this.RemoveLineBreaksAndRelativePath(filename);
-
-            if (openFileLowerCase.includes(path.normalize(desiredFile)))
+            var normalizedFile = path.normalize(desiredFile);
+            
+            if (openFileLowerCase.includes(normalizedFile))
                 return gcovFiles[i] ;
         }
     } 
@@ -76,7 +120,7 @@ export class FileHandler
         var content = fs.readFileSync(gcovFile).toString();
         var firstLine = content.substring(0, content.indexOf('\n')).toLowerCase();
         var extractedFilename = firstLine.split('source:').pop();
-
+        console.log("file: " + extractedFilename);
         return extractedFilename;
     }
     private RemoveLineBreaksAndRelativePath(path : string)
@@ -89,35 +133,5 @@ export class FileHandler
     }
 
 
-    private FindFilesRecursively(files: string | any[], inPath: any)
-    {
-        for( var i = 0 ; i < files.length ; i++ )
-        {
-            var filename = path.join(inPath,files[i]);
-            this.CheckFilename(filename);
-        };
-    }
-
-    private CheckFilename(filename: any | string[])
-    {
-            if ( fs.lstatSync(filename).isDirectory() )
-            {
-                this.GetAllGcovFilesFromWorkspace(filename);
-            }
-            else if (filename.indexOf(this.GCOV_FILE_EXTENSION) >=0 ) 
-            {
-                this.AddGcovFile(filename);
-            };
-    }
-
-    private AddGcovFile(file : string)
-    {
-        if ( this.GcovFilePaths.includes(file) )
-            return ;
-        this.GcovFilePaths.push(file);
-    } 
-
+    
 }
-
-
-

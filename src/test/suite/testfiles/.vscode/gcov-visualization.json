@@ -1,0 +1,6 @@
+{
+	"executable_directory" : "",
+	"makefile_directory" : "",
+	"gcov_path": "C:\\msys64\\mingw64\\bin\\gcov",
+	"gcov_output": "D:\\git\\stuff\\vsCodeExtension\\vscode-gcov-visualization\\src\\test\\suite\\testfiles\\reports"
+}

@@ -34,7 +34,7 @@ export function GetMainCppUri ()
 export function GetMainGcovUri () 
 {
 	ChangeDirectoryToTestFiles();
-    var file = path.join(process.cwd() + '/build' + '/main.cpp.gcov');
+    var file = path.join(process.cwd() + '/build' + '/bin' + '/main.cpp.gcov');
     file = path.normalize(file);
     var uri = vscode.Uri.parse(file);
 

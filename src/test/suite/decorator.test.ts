@@ -74,7 +74,7 @@ suite('DecoratorHandler Test Suite', () => {
 		
 		var decorators = SetDecorationOnTestFile();
 		var greenContainer = decorators[1].GetDecoratorContainer();
-		var expectedDecorators = 10;
+		var expectedDecorators = 8;
 
 		assert.equal(greenContainer.length, expectedDecorators);
 	});

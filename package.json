@@ -11,7 +11,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.toggleVisualization"
+		"onCommand:extension.toggleVisualization",
+		"onCommand:extension.createReports"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -19,6 +20,10 @@
 			{
 				"command": "extension.toggleVisualization",
 				"title": "Toggle Gcov"
+			},
+			{
+				"command": "extension.createReports",
+				"title": "Create Coverage Report"
 			}
 		]
 	},

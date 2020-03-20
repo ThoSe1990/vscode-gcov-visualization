@@ -12,27 +12,28 @@ suite('Filehandler Test Suite', () => {
 
 	test('GetAllGcovFilesFromWorkspace - no path', () => {
 		
-		var filehandler = new FileHandler.FileHandler();
-		filehandler.GetAllGcovFilesFromWorkspace(undefined);
+		var filehandler = new FileHandler.GcovFileHandler();
+		filehandler.GetAllFilesFromWorkspace(undefined);
 
-		var GcovFiles = filehandler.GetGcovFiles();
+		var GcovFiles = filehandler.GetFiles();
 
-		assert.equal(true, GcovFiles.length === 0);
+		assert.equal( GcovFiles.length , 0);
 
 	});
+
 
 	test('GetAllGcovFilesFromWorkspace - in testfiles directory', () => {
 
-		var filehandler = new FileHandler.FileHandler();
-		filehandler.GetAllGcovFilesFromWorkspace(Helper.GetTestFilesDirectory());
-		var GcovFiles = filehandler.GetGcovFiles();
+		var filehandler = new FileHandler.GcovFileHandler();
+		filehandler.GetAllFilesFromWorkspace(Helper.GetTestFilesDirectory());
+		var GcovFiles = filehandler.GetFiles();
 
-		assert.equal(true, GcovFiles.toString().includes('main.cpp.gcov'));
-		assert.equal(1, GcovFiles.length);
+		assert.equal(GcovFiles.toString().includes('main.cpp.gcov'), true);
+		assert.equal(GcovFiles.length, 1);
 	});
 
 	test('FindGcovFile - no text editor', () => {
-		var filehandler = new FileHandler.FileHandler();
+		var filehandler = new FileHandler.GcovFileHandler();
 		var result = filehandler.FindGcovFile(undefined);
 		assert.equal(result, undefined);
 	});
@@ -44,14 +45,14 @@ suite('Filehandler Test Suite', () => {
 		var document = new Fakes.FakeTextDocument(uri);
 		var editor = new Fakes.FakeEditor(document);
 
-		var filehandler = new FileHandler.FileHandler();
+		var filehandler = new FileHandler.GcovFileHandler();
 		var _path = path.normalize(process.cwd());
-		filehandler.GetAllGcovFilesFromWorkspace(_path);
+		filehandler.GetAllFilesFromWorkspace(_path);
 
 		var result = filehandler.FindGcovFile(editor);
 		
 		assert.notEqual(result, undefined);
-		assert.equal(true, result!.includes('main.cpp.gcov'));
+		assert.equal(result!.includes('main.cpp.gcov'), true);
 
 	});
 
@@ -62,9 +63,9 @@ suite('Filehandler Test Suite', () => {
 		var document = new Fakes.FakeTextDocument(uri);
 		var editor = new Fakes.FakeEditor(document);
 
-		var filehandler = new FileHandler.FileHandler();
+		var filehandler = new FileHandler.GcovFileHandler();
 		var _path = path.normalize(process.cwd());
-		filehandler.GetAllGcovFilesFromWorkspace(_path);
+		filehandler.GetAllFilesFromWorkspace(_path);
 
 		var result = filehandler.FindGcovFile(editor);
 		
