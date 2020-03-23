@@ -2,3 +2,6 @@ out
 node_modules
 .vscode-test/
 *.vsix
+
+src/test/suite/testfiles/build
+src/test/suite/testfiles/reports

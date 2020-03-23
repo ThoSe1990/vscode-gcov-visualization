@@ -5,19 +5,16 @@ import * as Helper from './unittest_includes/testhelper';
 import * as Decorator from '../../decorator';
 
 
-var fs = require('fs');
-var path = require('path');
-
 export function SetDecorationOnTestFile()
 {
-	var uriCpp = Helper.GetMainCppUri();
-	var uriGcov = Helper.GetMainGcovUri();
+	var cppFile = Helper.GetMainCppFilepath();
+	var gcovFile = Helper.GetMainGcovFilePath();
 
-	var document = new Fakes.FakeTextDocument(uriCpp);
+	var document = new Fakes.FakeTextDocument(cppFile);
 	var editor = new Fakes.FakeEditor(document);
 
 	var decoratorHandler = new Decorator.DecoratorHandler();
-	decoratorHandler.AddDecorator(editor, uriGcov.fsPath);
+	decoratorHandler.AddDecorator(editor, gcovFile);
 
 	var decorators = decoratorHandler.GetDecoratorsOfTextEditor(editor);
 	if(decorators)
@@ -32,8 +29,8 @@ export function SetDecorationOnTestFile()
 
 function PathToInvalidFile()
 {
-	var uriCpp = Helper.GetNoGcovFileCppUri();
-	var document = new Fakes.FakeTextDocument(uriCpp);
+	var cppFile = Helper.GetNoGcovFileFilePath();
+	var document = new Fakes.FakeTextDocument(cppFile);
 	var editor = new Fakes.FakeEditor(document);
 
 	var decoratorHandler = new Decorator.DecoratorHandler();
@@ -48,12 +45,12 @@ suite('DecoratorHandler Test Suite', () => {
 
 	test('DecoratorHandler - editor and colors valid', () => {
 
-		var uri = Helper.GetMainCppUri();
-		var document = new Fakes.FakeTextDocument(uri);
+		var filepath = Helper.GetMainCppFilepath();
+		var document = new Fakes.FakeTextDocument(filepath);
 		var editor = new Fakes.FakeEditor(document);
 
 		var decoratorHandler = new Decorator.DecoratorHandler();
-		decoratorHandler.AddDecorator(editor, uri.fsPath);
+		decoratorHandler.AddDecorator(editor, filepath);
 		var createdDecorators = decoratorHandler.GetDecoratorsOfTextEditor(editor);
 		
 		assert.equal(Decorator.COLORS.length, createdDecorators.length);

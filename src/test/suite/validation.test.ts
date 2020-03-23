@@ -40,7 +40,7 @@ suite('Validation Test Suite', () => {
 
 	test('validation open editor passed', () => {
 
-		var uri = Helper.GetMainCppUri();
+		var uri = Helper.GetMainCppFilepath();
 
 		var document = new Fakes.FakeTextDocument(uri);
 		var editor = new Fakes.FakeEditor(document);

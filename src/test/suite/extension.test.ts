@@ -8,7 +8,7 @@ import * as vscode from 'vscode';
 
 function GetValidEditor()
 {
-	var uriCpp = Helper.GetMainCppUri();
+	var uriCpp = Helper.GetMainCppFilepath();
 
 	var document = new Fakes.FakeTextDocument(uriCpp);
 	var editor = new Fakes.FakeEditor(document);
@@ -17,7 +17,7 @@ function GetValidEditor()
 
 function GetInvalidEditor()
 {
-	var uriCpp = Helper.GetNoGcovFileCppUri();
+	var uriCpp = Helper.GetNoGcovFileFilePath();
 
 	var document = new Fakes.FakeTextDocument(uriCpp);
 	var editor = new Fakes.FakeEditor(document);

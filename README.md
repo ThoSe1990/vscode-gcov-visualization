@@ -18,9 +18,7 @@ npm install
 ```
 
 
-## what's next?
-
-* attaching overall coverage percentage to statusbar
-* create a dark and light green decorator
-* create coverage report automatically / by command 
-* ux improvement like hints if no gcov files found, wrong fileformat ... 
+## open points:
+* catching errors: invalid folder open (paths conflict with json file while creating reports)
+* exception when toggle gcov and invalid file is open 
+* adjust unittests to make them run on pipeline

@@ -40,9 +40,9 @@ suite('Filehandler Test Suite', () => {
 
 	test('FindGcovFile - file with gcov file open', () => {
 
-		var uri = Helper.GetMainCppUri();
+		var filepath = Helper.GetMainCppFilepath();
 		
-		var document = new Fakes.FakeTextDocument(uri);
+		var document = new Fakes.FakeTextDocument(filepath);
 		var editor = new Fakes.FakeEditor(document);
 
 		var filehandler = new FileHandler.GcovFileHandler();
@@ -58,7 +58,7 @@ suite('Filehandler Test Suite', () => {
 
 	test('FindGcovFile - file without gcov file open', () => {
 	
-		var uri = Helper.GetNoGcovFileCppUri();
+		var uri = Helper.GetNoGcovFileFilePath();
 
 		var document = new Fakes.FakeTextDocument(uri);
 		var editor = new Fakes.FakeEditor(document);

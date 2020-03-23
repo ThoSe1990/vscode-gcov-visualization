@@ -30,10 +30,10 @@ class FakeTextLine implements vscode.TextLine
 export class FakeTextDocument implements vscode.TextDocument 
 {
 
-    constructor(_uri : vscode.Uri)
+    constructor(_file : string)
     {
-        this.uri = _uri;
-        this.fileName = _uri.fsPath;
+        this.uri = vscode.Uri.parse(_file);
+        this.fileName = _file;
     }
 
     uri: vscode.Uri;		

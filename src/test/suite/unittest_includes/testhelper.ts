@@ -22,31 +22,27 @@ export function GetTestFilesDirectory()
 	return path.normalize(process.cwd());
 }
 
-export function GetMainCppUri () 
+export function GetMainCppFilepath () 
 {
 	ChangeDirectoryToTestFiles();
     var file = path.join(process.cwd() + '/src' + '/main.cpp');
-    file = path.normalize(file);
-    var uri = vscode.Uri.parse(file);
-
-    return uri;
+	file = path.normalize(file);
+	return file;
 }
-export function GetMainGcovUri () 
+export function GetMainGcovFilePath () 
 {
 	ChangeDirectoryToTestFiles();
-    var file = path.join(process.cwd() + '/build' + '/bin' + '/main.cpp.gcov');
-    file = path.normalize(file);
-    var uri = vscode.Uri.parse(file);
+    var file = path.join(process.cwd() + '/reports' + '/main.cpp.gcov');
+	file = path.normalize(file);
+	return file;
 
-    return uri;
 }
 
-export function GetNoGcovFileCppUri () 
+export function GetNoGcovFileFilePath () 
 {
 	ChangeDirectoryToTestFiles();
     var file = path.join(process.cwd() + '/src' + '/noGcovFile.cpp');
-    file = path.normalize(file);
-    var uri = vscode.Uri.parse(file);
+	file = path.normalize(file);
+	return file;
 
-    return uri;
 }
