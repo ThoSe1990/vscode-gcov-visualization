@@ -39,8 +39,9 @@ make
   
 5. Visualize report `ctrl + shift + p --> Toggle Gcov` (same command to disable visualization)   
   
+6. On the statusbar (very bottom) is the coverage information printed
 
-![](img/screenshot.png)
+![](img/sample.png)
 
 ## open points:
 * refactor, refactor, refactor ... 
