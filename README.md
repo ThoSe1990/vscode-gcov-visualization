@@ -40,7 +40,7 @@ make
 5. Visualize report `ctrl + shift + p --> Toggle Gcov` (same command to disable visualization)   
   
 
-![](img/sampleScreenshot.png)
+![](img/screenshot.png)
 
 ## open points:
 * refactor, refactor, refactor ... 
