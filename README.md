@@ -22,8 +22,8 @@ To Run the unittests (and the extension on this sample project) do the following
 	"gcov_path": "< DRIVE:\\PATH_MSYS64 >\\mingw64\\bin\\gcov",
 	"gcov_output": "< DRIVE:\\PATH_TO_WORKSPACE > \\vscode-gcov-visualization\\src\\test\\suite\\testfiles\\reports"
 }
-``` 
-   
+```  
+  
 2. Build and run the sample (I'm working with GCC 8.2.0)
 ```
 mkdir build
@@ -39,6 +39,8 @@ make
   
 5. Visualize report `ctrl + shift + p --> Toggle Gcov` (same command to disable visualization)   
   
+
+![](img/sampleScreenshot.png)
 
 ## open points:
 * refactor, refactor, refactor ... 
