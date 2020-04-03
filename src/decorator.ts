@@ -21,11 +21,7 @@ export class DecoratorHandler
 
     private State : Boolean;
 
-    constructor () 
-    {
-        console.log("creating deco handler");
-        this.State = false;
-    }
+    constructor ()  { this.State = false; }
 
     public GetState() { return this.State; }
     public SetState(state : Boolean) { this.State = state; }
@@ -113,12 +109,12 @@ class internal_Decoration
     // literally: "some spaces and digits OR #####" : "some spaces and digits (optional with *)" : "any content to end of line"
     private readonly GCOV_REGEXP : RegExp = new RegExp('^[\\s?:*(\\d\\|\\#\\#\\#\\#\\#)(\\*)?]*:[\\s\\d]*:.*');
 
-    constructor ( textEditor : vscode.TextEditor , gcovfile : string, color : string) 
+    constructor ( textEditor : vscode.TextEditor , gcovFile : string, color : string) 
     {
         this.Color = color;
         this.TextEditor = textEditor; 
         this.SrcContent = fs.readFileSync(textEditor.document.fileName).toString().split("\n");
-        this.GcovContent = fs.readFileSync(gcovfile).toString().split("\n");
+        this.GcovContent = fs.readFileSync(gcovFile).toString().split("\n");
         this.Decoration = vscode.window.createTextEditorDecorationType({  });
         this.DecoratorContainer = [];
     }

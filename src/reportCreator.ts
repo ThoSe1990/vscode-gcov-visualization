@@ -7,40 +7,33 @@ import * as ConfigReader from './configReader';
 var path = require('path')
 var fs = require('fs');
 
-
-
 export class ReportCreator extends ConfigReader.ConfigReader
 {
-    constructor()
-    {
-        super();
-    }
-
-    public FindGcov()
-    {
-        try {
-            this.GcovExecutablePath = this.JsonContent.gcov_path;
-        } catch (error) {
-            this.GcovExecutablePath = "";
-        }
-    }
-
+    constructor(_w : vscode.WorkspaceFolder) { super(_w); }
+    
     public RunGcov(command : string)
     {
-        this.ChangeDirectory();
+        var result = "";
+        try {
+            this.ReadConfigFile();
+            this.ChangeDirectory();
+            
+            var gcov = this.GetGcovPath();
 
-        const cp = require('child_process')
-		var result = cp.exec(this.GcovExecutablePath + " " + command, (err: string, stdout: string, stderr: string) => {
-            console.log("executing: " + this.GcovExecutablePath + " " + command);
-            return stdout;
-        });
+            const cp = require('child_process')
+            result = cp.exec(gcov + " " + command, (err: string, stdout: string, stderr: string) => {
+                return stdout;
+            });
+        } catch (error) {
+            console.log(error);
+        }
 
         return result;
     }
 
     private ChangeDirectory()
     {
-        if (this.JsonContent.makefile_directory)
+        if (this.JsonContent.makefile_directory !== "" )
         {
             process.chdir(this.JsonContent.makefile_directory);    
             return;

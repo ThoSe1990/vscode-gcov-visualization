@@ -41,7 +41,8 @@ export function activate(context: vscode.ExtensionContext)
 	 
 	let CreateReport = vscode.commands.registerCommand('extension.createReports', () => {
 
-		CreateReports();
+		var workspace = vscode.workspace.workspaceFolders;
+		CreateReports(workspace);
 	});
 	
 	
@@ -51,25 +52,25 @@ export function activate(context: vscode.ExtensionContext)
 
 }
 
+function CreateReports(workdspace : vscode.WorkspaceFolder[] | undefined )
+{	
 
-function CreateReports()
-{
-	var r = new _reportCreator.ReportCreator();
-	r.ReadConfigFile();
-	r.FindGcov();
-
-	var files = GetGcdaFiles();
+	if (workdspace)
+	{
+		var r = new _reportCreator.ReportCreator(workdspace[0]);
+		var files = GetGcdaFiles(workdspace[0]);
 
 	for (var i = 0 ; i < files.length ; i++)
-		r.RunGcov(files[i]);
+		r.RunGcov(files[i]);	
+	}
 }
 
-function GetGcdaFiles()
+function GetGcdaFiles(workspaceFolder : vscode.WorkspaceFolder)
 {
 	var filehandler = new _fileHandler.FileHandler(".gcda");
-	var workspaceFolder = vscode.workspace.workspaceFolders;
-	if(workspaceFolder)
-		filehandler.GetAllFilesFromWorkspace(workspaceFolder[0].uri.fsPath);
+	var workspacePath =  workspaceFolder.uri.fsPath;
+	if(workspacePath)
+		filehandler.GetAllFilesFromWorkspace(workspacePath);
 	return filehandler.GetFiles();
 }
 

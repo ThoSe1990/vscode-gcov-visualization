@@ -10,19 +10,31 @@ var fs = require('fs');
 export class ConfigReader
 {
 
+    protected WorkspaceFolder : vscode.WorkspaceFolder;
+
+    constructor(_w : vscode.WorkspaceFolder) { this.WorkspaceFolder = _w;}
+
     protected JsonContent : any;
-    protected GcovExecutablePath : string = "";
-
-    public GetGcovPath () { return this.GcovExecutablePath; }
-
-    constructor() { }
+    
+    public GetGcovPath () 
+    { 
+        if (this.JsonContent.gcov_path) 
+            return this.JsonContent.gcov_path; 
+        else throw "No Gcov Path found";
+    }
 
     public ReadConfigFile()
     {
-        var basepath = path.normalize( vscode.workspace.workspaceFolders![0].uri.fsPath)
+        var workspacePath =  this.WorkspaceFolder.uri.fsPath;
+        if(!workspacePath)
+            throw "Invalid WorkspaceFolder";
+            
+        var basepath = path.normalize(workspacePath)
         var p =  basepath +"\\.vscode\\gcov-visualization.json" ;
         var content = fs.readFileSync(p).toString();
-        this.JsonContent = JSON.parse( content );   
+        this.JsonContent = JSON.parse( content ); 
+    
     }
+
 
 }

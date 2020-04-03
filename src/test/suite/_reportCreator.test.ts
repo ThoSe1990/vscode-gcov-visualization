@@ -1,7 +1,10 @@
+import * as vscode from 'vscode';
 import * as assert from 'assert';
 import * as Filehandler from '../../filehandler';
 import * as ReportCreator from '../../reportCreator';
 import * as Helper from './unittest_includes/testhelper';
+import * as Fakes from './unittest_includes/fakes';
+
 
 
 var fs = require('fs');
@@ -10,27 +13,22 @@ var path = require('path');
 
 suite('Report Creator Test Suite', () => {
 
-    test('Report Creator - dont find gcov', () => {
-		
-        var r = new ReportCreator.ReportCreator();
-        assert.equal( r.GetGcovPath(), "");
-    });
-    
     test('Report Creator - find gcov', () => {
-		
-        var r = new ReportCreator.ReportCreator();
+        
+        var workspace = new Fakes.FakeWorkspaceFolder(vscode.Uri.parse(Helper.GetTestFilesDirectory()));
+        var r = new ReportCreator.ReportCreator(workspace);
         r.ReadConfigFile();
-        r.FindGcov();
         assert.equal(r.GetGcovPath().includes("gcov"), true );
     });
 
 	test('Report Creator - get gcov version', () => {
 		
-        var r = new ReportCreator.ReportCreator();
+        var workspace = new Fakes.FakeWorkspaceFolder(vscode.Uri.parse(Helper.GetTestFilesDirectory()));
+        var r = new ReportCreator.ReportCreator(workspace);
         r.ReadConfigFile();
-        r.FindGcov();
+
         var result = r.RunGcov("--version");
-    
+  
         assert.notEqual(result, "");
     });
 
@@ -47,9 +45,9 @@ suite('Report Creator Test Suite', () => {
 
 	test('Report Creator - create gcov file', () => {
 
-        var r = new ReportCreator.ReportCreator();
-        r.ReadConfigFile();
-        r.FindGcov();
+        var workspace = new Fakes.FakeWorkspaceFolder(vscode.Uri.parse(Helper.GetTestFilesDirectory()));
+        var r = new ReportCreator.ReportCreator(workspace);
+        r.ReadConfigFile();        
         var filehandler = new Filehandler.FileHandler(".gcda");
         filehandler.GetAllFilesFromWorkspace(Helper.GetTestFilesDirectory());
         var files = filehandler.GetFiles();
